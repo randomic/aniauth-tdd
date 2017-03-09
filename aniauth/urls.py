@@ -16,6 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from accounts.views import welcome_page
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', welcome_page, name='welcome'),
 ]
