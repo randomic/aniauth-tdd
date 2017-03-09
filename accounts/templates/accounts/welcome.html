@@ -4,5 +4,8 @@
 
 {% block body %}
 Welcome to ANIAuth! To get started, or if you are a returning user, please enter your email address below.
-<input id="id_email" placeholder="Email" />
+<form method="POST">
+    <input id="id_email" placeholder="Email" />
+    {% csrf_token %}
+</form>
 {% endblock body %}
