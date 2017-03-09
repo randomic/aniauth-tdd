@@ -1,9 +1,17 @@
 """Functional tests for aniauth project
 
 """
+import time
+
 from django.test import tag
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
+
+
+MAX_WAIT = 10
+TEST_EMAIL = 'newvisitor@example.com'
 
 
 @tag('functional')
@@ -17,6 +25,19 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.refresh()
         self.browser.quit()
+
+    def wait_for(self, func):
+        """Waits for up to MAX_WAIT seconds for an assertation to pass.
+
+        """
+        start_time = time.time()
+        while True:
+            try:
+                return func()
+            except (AssertionError, WebDriverException) as exc:
+                if time.time() - start_time > MAX_WAIT:
+                    raise exc
+                time.sleep(0.5)
 
     def test_anon_sees_welcome_page(self):
         """An unauthenticated user should be able to see the welcome page.
@@ -34,3 +55,21 @@ class NewVisitorTest(StaticLiveServerTestCase):
         emailinput = self.browser.find_element_by_id('id_email')
         self.assertEqual(emailinput.get_attribute('placeholder'),
                          'Email')
+
+    def test_anon_can_login_with_email(self):
+        """A new user should be able to login with only their email address.
+
+        """
+        # They browse to this site.
+        self.browser.get(self.live_server_url)
+        # They enter their email address into the input box.
+        emailinput = self.browser.find_element_by_id('id_email')
+        emailinput.send_keys(TEST_EMAIL)
+        emailinput.send_keys(Keys.ENTER)
+
+        self.wait_for(lambda: self.assertIn(
+            'Check your email',
+            self.browser.find_element_by_tag_name('body').text
+        ))
+
+        self.fail('Finish test')
