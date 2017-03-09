@@ -8,6 +8,9 @@ from selenium import webdriver
 
 @tag('functional')
 class NewVisitorTest(StaticLiveServerTestCase):
+    """Tests for first-time users visiting the site.
+
+    """
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -28,4 +31,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('get started', body)
         self.assertIn('enter your email address below', body)
         # There is a form with one field for their email.
-        self.fail('Finish test')
+        emailinput = self.browser.find_element_by_id('id_email')
+        self.assertEqual(emailinput.get_attribute('placeholder'),
+                         'Email')
