@@ -15,8 +15,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.refresh()
         self.browser.quit()
 
-    def test_anon_redirected_to_welcome_page(self):
-        """An unauthenticated user should be sent to the welcome page.
+    def test_anon_sees_welcome_page(self):
+        """An unauthenticated user should be able to see the welcome page.
 
         """
         # They browse to this site.
@@ -24,5 +24,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # They see that this is a deployment of ANIAuth.
         self.assertIn('Welcome | ANIAuth', self.browser.title)
         # They are told to 'get started' by entering their email.
-        self.fail('Finish test')
+        body = self.browser.find_element_by_tag_name('body').text
+        self.assertIn('get started', body)
+        self.assertIn('enter your email address below', body)
         # There is a form with one field for their email.
+        self.fail('Finish test')
