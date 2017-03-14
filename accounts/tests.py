@@ -72,11 +72,24 @@ class TokenGeneratorTest(TestCase):
 
         """
         token = self.generator.create_token(TEST_EMAIL)
+
+        # Modify the email address which is 'signed'.
         split_token = base64.urlsafe_b64decode(
             token.encode()
         ).decode().split('@')
+
         split_token[0] = 'maliciousvisitor'
         malicious_token = base64.urlsafe_b64encode(
             '@'.join(split_token).encode()
         ).decode()
+
         self.assertIsNone(self.generator.consume_token(malicious_token))
+
+    def test_expired_token_fails(self):
+        """A token which has expired returns None instead of an email.
+
+        """
+        token = self.generator.create_token(TEST_EMAIL)
+        sleep(1)  # Ensure the token is more than 0 seconds old.
+        email = self.generator.consume_token(token, 0)
+        self.assertIsNone(email)
