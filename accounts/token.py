@@ -30,5 +30,5 @@ class LoginTokenGenerator(object):
             return self.signer.unsign(
                 base64.urlsafe_b64decode(token.encode()), max_age
             )
-        except BadSignature:
+        except (BadSignature, base64.binascii.Error):
             return None
