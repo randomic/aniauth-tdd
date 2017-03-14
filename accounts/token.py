@@ -22,3 +22,10 @@ class LoginTokenGenerator(object):
             self.signer.sign(email).encode()
         ).decode()
 
+    def consume_token(self, token, max_age=600):
+        """Extract the email provided the token isn't older than max_age.
+
+        """
+        return self.signer.unsign(
+            base64.urlsafe_b64decode(token.encode()), max_age
+        )
