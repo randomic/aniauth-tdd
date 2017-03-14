@@ -5,6 +5,7 @@ import base64
 from time import sleep
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.base_user import BaseUserManager
 from django.test import TestCase
 
 from accounts.token import LoginTokenGenerator
@@ -92,4 +93,22 @@ class TokenGeneratorTest(TestCase):
         token = self.generator.create_token(TEST_EMAIL)
         sleep(1)  # Ensure the token is more than 0 seconds old.
         email = self.generator.consume_token(token, 0)
+        self.assertIsNone(email)
+
+    def test_random_string_fails(self):
+        """A random non-token string returns None instead of an email.
+
+        """
+        token = BaseUserManager().make_random_password()
+        email = self.generator.consume_token(token)
+        self.assertIsNone(email)
+
+    def test_tokenlike_string_fails(self):
+        """A random token-like string returns None instead of an email.
+
+        """
+        token = base64.urlsafe_b64encode(
+            BaseUserManager().make_random_password().encode()
+        ).decode()
+        email = self.generator.consume_token(token)
         self.assertIsNone(email)
