@@ -1,0 +1,24 @@
+"""module containing generator for login tokens
+
+"""
+import base64
+
+from django.core.signing import TimestampSigner
+
+
+class LoginTokenGenerator(object):
+    """Generator for the timestamp signed tokens used for logging in.
+
+    """
+    def __init__(self):
+        self.signer = TimestampSigner(
+            salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
+
+    def create_token(self, email):
+        """Return a login token for the provided email address.
+
+        """
+        return base64.urlsafe_b64encode(
+            self.signer.sign(email).encode()
+        ).decode()
+
