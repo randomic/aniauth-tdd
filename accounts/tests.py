@@ -67,8 +67,8 @@ class TokenGeneratorTest(TestCase):
         email = self.generator.consume_token(token)
         self.assertEqual(email, TEST_EMAIL)
 
-    def test_modified_token_doesnt_yield(self):
-        """A modified returns None.
+    def test_modified_token_fails(self):
+        """A modified token returns None instead of an email.
 
         """
         token = self.generator.create_token(TEST_EMAIL)
