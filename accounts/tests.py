@@ -1,11 +1,12 @@
 """accounts app unittests
 
 """
-from django.test import TestCase
+from time import sleep
+
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
-from accounts.models import LoginToken
-
+from accounts.token import LoginTokenGenerator
 
 TEST_EMAIL = 'newvisitor@example.com'
 
@@ -41,14 +42,19 @@ class UserModelTest(TestCase):
         self.assertTrue(user.is_authenticated())
 
 
-class TokenModelTest(TestCase):
+class TokenGeneratorTest(TestCase):
     """Tests for login token model.
 
     """
+    def setUp(self):
+        self.signer = LoginTokenGenerator()
+
     def test_unique_tokens_generated(self):
-        """Two tokens generated should be unique.
+        """Tokens generated one second apart should differ.
 
         """
-        token1 = LoginToken(TEST_EMAIL)
-        token2 = LoginToken(TEST_EMAIL)
+        token1 = self.signer.create_token(TEST_EMAIL)
+        sleep(1)
+        token2 = self.signer.create_token(TEST_EMAIL)
         self.assertNotEqual(token1, token2)
+
