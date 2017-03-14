@@ -1,6 +1,7 @@
 """accounts app unittests
 
 """
+import base64
 from time import sleep
 
 from django.contrib.auth import get_user_model
@@ -47,21 +48,35 @@ class TokenGeneratorTest(TestCase):
 
     """
     def setUp(self):
-        self.signer = LoginTokenGenerator()
+        self.generator = LoginTokenGenerator()
 
     def test_unique_tokens_generated(self):
         """Tokens generated one second apart should differ.
 
         """
-        token1 = self.signer.create_token(TEST_EMAIL)
+        token1 = self.generator.create_token(TEST_EMAIL)
         sleep(1)
-        token2 = self.signer.create_token(TEST_EMAIL)
+        token2 = self.generator.create_token(TEST_EMAIL)
         self.assertNotEqual(token1, token2)
 
     def test_email_recovered_from_token(self):
         """A consumed token should yield the original email address.
 
         """
-        token = self.signer.create_token(TEST_EMAIL)
-        email = self.signer.consume_token(token)
+        token = self.generator.create_token(TEST_EMAIL)
+        email = self.generator.consume_token(token)
         self.assertEqual(email, TEST_EMAIL)
+
+    def test_modified_token_doesnt_yield(self):
+        """A modified returns None.
+
+        """
+        token = self.generator.create_token(TEST_EMAIL)
+        split_token = base64.urlsafe_b64decode(
+            token.encode()
+        ).decode().split('@')
+        split_token[0] = 'maliciousvisitor'
+        malicious_token = base64.urlsafe_b64encode(
+            '@'.join(split_token).encode()
+        ).decode()
+        self.assertIsNone(self.generator.consume_token(malicious_token))
