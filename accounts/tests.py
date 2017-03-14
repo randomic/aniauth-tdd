@@ -58,3 +58,10 @@ class TokenGeneratorTest(TestCase):
         token2 = self.signer.create_token(TEST_EMAIL)
         self.assertNotEqual(token1, token2)
 
+    def test_email_recovered_from_token(self):
+        """A consumed token should yield the original email address.
+
+        """
+        token = self.signer.create_token(TEST_EMAIL)
+        email = self.signer.consume_token(token)
+        self.assertEqual(email, TEST_EMAIL)
