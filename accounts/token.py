@@ -3,7 +3,7 @@
 """
 import base64
 
-from django.core.signing import TimestampSigner
+from django.core.signing import TimestampSigner, BadSignature
 
 
 class LoginTokenGenerator(object):
@@ -26,6 +26,9 @@ class LoginTokenGenerator(object):
         """Extract the email provided the token isn't older than max_age.
 
         """
-        return self.signer.unsign(
-            base64.urlsafe_b64decode(token.encode()), max_age
-        )
+        try:
+            return self.signer.unsign(
+                base64.urlsafe_b64decode(token.encode()), max_age
+            )
+        except BadSignature:
+            return None
