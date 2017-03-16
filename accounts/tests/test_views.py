@@ -2,6 +2,7 @@
 
 """
 from django.test import TestCase
+from django.core import mail
 from django.urls import reverse
 
 
@@ -39,3 +40,9 @@ class SendLoginEmailTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
 
+    def test_view_sends_token_email(self):
+        """The view should send an email to the email address from post.
+
+        """
+        self.client.post(self.url, data={'email': self.test_email})
+        self.assertEqual(len(mail.outbox), 1)
