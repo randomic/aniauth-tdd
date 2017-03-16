@@ -32,3 +32,10 @@ class SendLoginEmailTest(TestCase):
         response = self.client.post(self.url, data={'email': self.test_email})
         self.assertTemplateUsed(response, 'accounts/login_email_sent.html')
 
+    def test_get_request_yields_405(self):
+        """Accessing the view via get request is not allowed.
+
+        """
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405)
+
