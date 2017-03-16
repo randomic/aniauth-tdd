@@ -6,7 +6,7 @@ import base64
 from django.core.signing import TimestampSigner, BadSignature
 
 
-class LoginTokenGenerator(object):
+class LoginTokenGenerator:
     """Generator for the timestamp signed tokens used for logging in.
 
     """
