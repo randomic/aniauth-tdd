@@ -4,6 +4,7 @@
 import base64
 
 from django.core.signing import TimestampSigner, BadSignature
+from django.contrib.auth import get_user_model
 
 
 class LoginTokenGenerator:
@@ -14,21 +15,24 @@ class LoginTokenGenerator:
         self.signer = TimestampSigner(
             salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
 
-    def create_token(self, email):
-        """Return a login token for the provided email address.
+    def create_token(self, user):
+        """Return a login token for the provided user.
 
         """
         return base64.urlsafe_b64encode(
-            self.signer.sign(email).encode()
+            self.signer.sign(user.email).encode()
         ).decode()
 
     def consume_token(self, token, max_age=600):
-        """Extract the email provided the token isn't older than max_age.
+        """Extract the user provided the token isn't older than max_age.
 
         """
         try:
-            return self.signer.unsign(
+            email = self.signer.unsign(
                 base64.urlsafe_b64decode(token.encode()), max_age
             )
-        except (BadSignature, base64.binascii.Error):
+            return get_user_model().objects.get(email=email)
+        except (BadSignature,
+                base64.binascii.Error,
+                get_user_model().DoesNotExist):
             return None
