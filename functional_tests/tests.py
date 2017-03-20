@@ -1,9 +1,11 @@
 """Functional tests for aniauth project
 
 """
+import re
 import time
 
 from django.test import tag
+from django.core import mail
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -63,7 +65,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # They browse to this site.
         self.browser.get(self.live_server_url)
         # They enter their email address into the input box.
-        emailinput = self.browser.find_element_by_id('id_email')
+        emailinput = self.browser.find_element_by_name('email')
         emailinput.send_keys(TEST_EMAIL)
         emailinput.send_keys(Keys.ENTER)
 
@@ -72,4 +74,20 @@ class NewVisitorTest(StaticLiveServerTestCase):
             self.browser.find_element_by_tag_name('body').text
         ))
 
-        self.fail('Finish test')
+        # Their email contains a message from ANIAuth.
+        email = mail.outbox[0]
+        self.assertIn(TEST_EMAIL, email.to)
+        self.assertIn('Your login link for ANIAuth', email.subject)
+
+        # The email contains a url link.
+        url_search = re.search(r'http://.+/.+$', email.body)
+        url = url_search.group(0)
+        self.assertIn(self.live_server_url, url)
+
+        # The url is clicked.
+        self.browser.get(url)
+
+        # The user is logged in.
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text('Logout')
+        )
