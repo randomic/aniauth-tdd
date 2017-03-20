@@ -57,6 +57,14 @@ class TokenGeneratorTest(TestCase):
 
         self.assertIsNone(self.generator.consume_token(malicious_token))
 
+    def test_deleted_token_fails(self):
+        """A token yielding an email belonging to deleted user returns none.
+
+        """
+        token = self.generator.create_token(self.user)
+        self.user.delete()
+        self.assertIsNone(self.generator.consume_token(token))
+
     def test_expired_token_fails(self):
         """A token which has expired returns None instead of a user.
 
