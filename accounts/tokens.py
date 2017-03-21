@@ -15,12 +15,12 @@ class LoginTokenGenerator:
         self.signer = TimestampSigner(
             salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
 
-    def create_token(self, user):
-        """Return a login token for the provided user.
+    def make_token(self, email):
+        """Return a login token for the provided email.
 
         """
         return base64.urlsafe_b64encode(
-            self.signer.sign(user.email).encode()
+            self.signer.sign(email).encode()
         ).decode()
 
     def consume_token(self, token, max_age=600):
@@ -28,11 +28,8 @@ class LoginTokenGenerator:
 
         """
         try:
-            email = self.signer.unsign(
+            return self.signer.unsign(
                 base64.urlsafe_b64decode(token.encode()), max_age
             )
-            return get_user_model().objects.get(email=email)
-        except (BadSignature,
-                base64.binascii.Error,
-                get_user_model().DoesNotExist):
+        except (BadSignature, base64.binascii.Error):
             return None
