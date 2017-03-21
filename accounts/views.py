@@ -3,8 +3,9 @@
 """
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.core.mail import EmailMultiAlternatives
 from django.views.decorators.http import require_POST
+
+from accounts.forms import LoginForm
 
 
 def welcome_page(request):
@@ -13,13 +14,13 @@ def welcome_page(request):
 
 @require_POST
 def send_login_email(request):
-    email = EmailMultiAlternatives(
-        'Your login link for ANIAuth',
-        'To complete the login process, simply click on this link: ',
-        to=[request.POST['email']]
-    )
-    email.send()
-    return redirect(reverse_lazy('login_email_sent'))
+    form = LoginForm(request.POST)
+
+    if form.is_valid():
+        form.save(request)
+        return redirect(reverse_lazy('login_email_sent'))
+    else:
+        return redirect(reverse_lazy('welcome'))
 
 
 def login_email_sent(request):
