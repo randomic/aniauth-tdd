@@ -11,7 +11,6 @@ from accounts.tokens import LoginTokenGenerator
 
 
 USER = get_user_model()
-TEST_EMAIL = 'newvisitor@example.com'
 
 
 class TokenGeneratorTest(TestCase):
@@ -19,31 +18,31 @@ class TokenGeneratorTest(TestCase):
 
     """
     def setUp(self):
-        self.user = USER.objects.create_user(TEST_EMAIL)
+        self.test_email = 'newvisitor@example.com'
         self.generator = LoginTokenGenerator()
 
     def test_unique_tokens_generated(self):
         """Tokens generated one second apart should differ.
 
         """
-        token1 = self.generator.create_token(self.user)
+        token1 = self.generator.make_token(self.test_email)
         sleep(1)
-        token2 = self.generator.create_token(self.user)
+        token2 = self.generator.make_token(self.test_email)
         self.assertNotEqual(token1, token2)
 
     def test_email_recovered_from_token(self):
         """A consumed token should yield the original user.
 
         """
-        token = self.generator.create_token(self.user)
-        user = self.generator.consume_token(token)
-        self.assertEqual(user, self.user)
+        token = self.generator.make_token(self.test_email)
+        email = self.generator.consume_token(token)
+        self.assertEqual(email, self.test_email)
 
     def test_modified_token_fails(self):
         """A modified token returns None instead of a user.
 
         """
-        token = self.generator.create_token(self.user)
+        token = self.generator.make_token(self.test_email)
 
         # Modify the email address which is 'signed'.
         split_token = base64.urlsafe_b64decode(
@@ -57,30 +56,22 @@ class TokenGeneratorTest(TestCase):
 
         self.assertIsNone(self.generator.consume_token(malicious_token))
 
-    def test_deleted_token_fails(self):
-        """A token yielding an email belonging to deleted user returns none.
-
-        """
-        token = self.generator.create_token(self.user)
-        self.user.delete()
-        self.assertIsNone(self.generator.consume_token(token))
-
     def test_expired_token_fails(self):
         """A token which has expired returns None instead of a user.
 
         """
-        token = self.generator.create_token(self.user)
+        token = self.generator.make_token(self.test_email)
         sleep(1)  # Ensure the token is more than 0 seconds old.
-        user = self.generator.consume_token(token, 0)
-        self.assertIsNone(user)
+        email = self.generator.consume_token(token, 0)
+        self.assertIsNone(email)
 
     def test_random_string_fails(self):
         """A random non-token string returns None instead of a user.
 
         """
         token = USER.objects.make_random_password()
-        user = self.generator.consume_token(token)
-        self.assertIsNone(user)
+        email = self.generator.consume_token(token)
+        self.assertIsNone(email)
 
     def test_tokenlike_string_fails(self):
         """A random token-like string returns None instead of a user.
@@ -89,5 +80,5 @@ class TokenGeneratorTest(TestCase):
         token = base64.urlsafe_b64encode(
             USER.objects.make_random_password().encode()
         ).decode()
-        user = self.generator.consume_token(token)
-        self.assertIsNone(user)
+        email = self.generator.consume_token(token)
+        self.assertIsNone(email)
