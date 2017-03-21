@@ -33,6 +33,13 @@ class SendLoginEmailTest(TestCase):
         response = self.client.post(self.url, data={'email': self.test_email})
         self.assertRedirects(response, reverse_lazy('login_email_sent'))
 
+    def test_invalid_email_redirect(self):
+        """Invalid email is posted the view should redirect welcome view.
+
+        """
+        response = self.client.post(self.url, data={'email': 'invalidemail'})
+        self.assertRedirects(response, reverse_lazy('welcome'))
+
     def test_get_request_yields_405(self):
         """Accessing the view via get request is not allowed.
 
