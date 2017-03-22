@@ -3,7 +3,7 @@
 """
 from django.test import TestCase
 from django.core import mail
-from django.urls import reverse_lazy
+from django.shortcuts import reverse
 
 
 class WelcomePageTest(TestCase):
@@ -23,7 +23,7 @@ class SendLoginEmailTest(TestCase):
 
     """
     def setUp(self):
-        self.url = reverse_lazy('send_login_email')
+        self.url = reverse('send_login_email')
         self.test_email = 'newvisitor@example.com'
 
     def test_redirects_to_emailsent(self):
@@ -31,14 +31,14 @@ class SendLoginEmailTest(TestCase):
 
         """
         response = self.client.post(self.url, data={'email': self.test_email})
-        self.assertRedirects(response, reverse_lazy('login_email_sent'))
+        self.assertRedirects(response, reverse('login_email_sent'))
 
     def test_invalid_email_redirect(self):
         """Invalid email is posted the view should redirect welcome view.
 
         """
         response = self.client.post(self.url, data={'email': 'invalidemail'})
-        self.assertRedirects(response, reverse_lazy('welcome'))
+        self.assertRedirects(response, reverse('welcome'))
 
     def test_get_request_yields_405(self):
         """Accessing the view via get request is not allowed.
@@ -63,5 +63,18 @@ class LoginEmailSentTest(TestCase):
         """The view should use the template which contains a success message.
 
         """
-        response = self.client.get(reverse_lazy('login_email_sent'))
+        response = self.client.get(reverse('login_email_sent'))
         self.assertTemplateUsed(response, 'accounts/login_email_sent.html')
+        self.assertContains(response, 'Check your email')
+
+
+class LoginViewTest(TestCase):
+    """Tests for the view which verifies tokens and allows users to login.
+
+    """
+    def test_uses_correct_template(self):
+        """The view should use the template which contains a login button.
+
+        """
+        response = self.client.get(reverse('login'))
+        self.assertTemplateUsed(response, 'accounts/login.html')
