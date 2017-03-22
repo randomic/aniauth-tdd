@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^send_login_email$', views.send_login_email,
         name='send_login_email'),
     url(r'^login_email_sent$', views.login_email_sent,
-        name='login_email_sent')
+        name='login_email_sent'),
+    url(r'^login$', views.login,
+        name='login')
 ]

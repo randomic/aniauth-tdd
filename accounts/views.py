@@ -25,3 +25,7 @@ def send_login_email(request):
 
 def login_email_sent(request):
     return render(request, 'accounts/login_email_sent.html')
+
+
+def login(request):
+    return render(request, 'accounts/login.html')
