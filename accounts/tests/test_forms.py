@@ -5,6 +5,7 @@ import re
 
 from django.test import TestCase, RequestFactory
 from django.core import mail
+from django.shortcuts import reverse
 
 from accounts.forms import LoginForm
 
@@ -38,3 +39,5 @@ class LoginFormTest(TestCase):
         email = mail.outbox[0]
         url_search = re.search(r'http://.+/.+$', email.body)
         self.assertIsNotNone(url_search)
+        url = url_search.group(0)
+        self.assertIn(reverse('login'), url)
