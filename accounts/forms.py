@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse_lazy
 
 from accounts.tokens import LoginTokenGenerator
 
@@ -18,8 +19,9 @@ class LoginForm(forms.Form):
     def generate_login_link(self, email, request):
         protocol = 'http'
         domain = get_current_site(request).domain
+        url = reverse_lazy('login')
         token = LoginTokenGenerator().make_token(email)
-        return '{}://{}/login/{}'.format(protocol, domain, token)
+        return '{}://{}{}?token={}'.format(protocol, domain, url, token)
 
     def save(self, request):
         """Generate a login token and send it to the email from the form.
