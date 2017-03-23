@@ -2,10 +2,14 @@
 
 {% block title %}Welcome{% endblock title %}
 
+{% block nav_form %}
+    <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="/accounts/send_login_email">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" name="email" id="id_email" type="email" placeholder="Email">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+    </form>
+{%endblock nav_form %}
+
 {% block body %}
-Welcome to ANIAuth! To get started, or if you are a returning user, please enter your email address below.
-<form method="POST" action="{% url 'send_login_email' %}">
-    <input name="email" id="id_email" placeholder="Email" type="email"/>
-    {% csrf_token %}
-</form>
+    Welcome to ANIAuth! To get started, or if you are a returning user, please enter your email address above.
 {% endblock body %}
