@@ -23,6 +23,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     """
     def setUp(self):
         self.browser = webdriver.Chrome()
+        self.browser.maximize_window()
 
     def tearDown(self):
         self.browser.refresh()
@@ -52,7 +53,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # They are told to 'get started' by entering their email.
         body = self.browser.find_element_by_tag_name('body').text
         self.assertIn('get started', body)
-        self.assertIn('enter your email address below', body)
+        self.assertIn('enter your email address', body)
         # There is a form with one field for their email.
         emailinput = self.browser.find_element_by_id('id_email')
         self.assertEqual(emailinput.get_attribute('placeholder'),
