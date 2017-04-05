@@ -25,4 +25,4 @@ class UserModelTest(TestCase):
 
         """
         user = USER()
-        self.assertTrue(user.is_authenticated())
+        self.assertTrue(user.is_authenticated)
