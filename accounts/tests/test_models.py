@@ -3,6 +3,7 @@
 """
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 
 USER = get_user_model()
@@ -19,6 +20,14 @@ class UserModelTest(TestCase):
         """
         user = USER(email=TEST_EMAIL)
         user.full_clean()
+
+    def test_user_invalid_without_email(self):
+        """Should raise if the user model requires an email.
+
+        """
+        with self.assertRaises(ValidationError):
+            user = USER()
+            user.full_clean()
 
     def test_users_are_authenticated(self):
         """User objects should be authenticated for views/templates.
