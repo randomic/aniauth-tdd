@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'logintokens',
 ]
 
-AUTH_USER_MODEL = 'logintokens.User'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
