@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-import accounts.views as views
+import logintokens.views as views
 
 
 urlpatterns = [

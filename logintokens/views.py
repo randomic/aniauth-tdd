@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 
-from accounts.forms import LoginForm
+from logintokens.forms import LoginForm
 
 
 def welcome_page(request):

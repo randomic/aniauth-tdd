@@ -7,7 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse_lazy
 
-from accounts.tokens import LoginTokenGenerator
+from logintokens.tokens import LoginTokenGenerator
 
 
 USER = get_user_model()

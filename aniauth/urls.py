@@ -16,8 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from accounts.views import welcome_page
-from accounts import urls as accounts_urls
+from logintokens.views import welcome_page
+from logintokens import urls as accounts_urls
 
 
 urlpatterns = [

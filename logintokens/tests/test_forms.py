@@ -7,7 +7,7 @@ from django.test import TestCase, RequestFactory
 from django.core import mail
 from django.shortcuts import reverse
 
-from accounts.forms import LoginForm
+from logintokens.forms import LoginForm
 
 
 class LoginFormTest(TestCase):

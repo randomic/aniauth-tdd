@@ -7,7 +7,7 @@ from time import sleep
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from accounts.tokens import LoginTokenGenerator
+from logintokens.tokens import LoginTokenGenerator
 
 
 USER = get_user_model()
