@@ -6,18 +6,6 @@ from django.core import mail
 from django.shortcuts import reverse
 
 
-class WelcomePageTest(TestCase):
-    """Tests relating to the welcome_page view.
-
-    """
-    def test_uses_welcome_template(self):
-        """The root url should respond with the welcome page template.
-
-        """
-        response = self.client.get('/')
-        self.assertTemplateUsed(response, 'accounts/welcome.html')
-
-
 class SendLoginEmailTest(TestCase):
     """Tests for the view which sends the login email.
 
@@ -32,13 +20,6 @@ class SendLoginEmailTest(TestCase):
         """
         response = self.client.post(self.url, data={'email': self.test_email})
         self.assertRedirects(response, reverse('login_email_sent'))
-
-    def test_invalid_email_redirect(self):
-        """Invalid email is posted the view should redirect welcome view.
-
-        """
-        response = self.client.post(self.url, data={'email': 'invalidemail'})
-        self.assertRedirects(response, reverse('welcome'))
 
     def test_get_request_yields_405(self):
         """Accessing the view via get request is not allowed.

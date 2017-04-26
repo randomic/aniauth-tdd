@@ -16,12 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from logintokens.views import welcome_page
 from logintokens import urls as accounts_urls
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', welcome_page, name='welcome'),
     url(r'^accounts/', include(accounts_urls)),
 ]

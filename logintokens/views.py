@@ -8,10 +8,6 @@ from django.views.decorators.http import require_POST
 from logintokens.forms import LoginForm
 
 
-def welcome_page(request):
-    return render(request, 'accounts/welcome.html')
-
-
 @require_POST
 def send_login_email(request):
     form = LoginForm(request.POST)
