@@ -21,13 +21,6 @@ class SendTokenTest(TestCase):
         response = self.client.post(self.url, data={'email': self.test_email})
         self.assertRedirects(response, reverse('send_token_done'))
 
-    def test_get_request_yields_405(self):
-        """Accessing the view via get request is not allowed.
-
-        """
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 405)
-
     def test_view_sends_token_email(self):
         """The view should send an email to the email address from post.
 
