@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(),
         name='logout'),
 
-    url(r'^send_token/$', views.send_login_email,
+    url(r'^send_token/$', views.SendTokenView.as_view(),
         name='send_token'),
     url(r'^send_token/done/$', views.login_email_sent,
         name='send_token_done'),

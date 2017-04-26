@@ -1,22 +1,28 @@
 """views for accounts app
 
 """
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic.edit import FormView
 
 from logintokens.forms import LoginForm
 
 
-@require_POST
-def send_login_email(request):
-    form = LoginForm(request.POST)
+class SendTokenView(FormView):
+    form_class = LoginForm
+    success_url = reverse_lazy('send_token_done')
+    template_name = 'logintokens/send_token_form.html'
+    title = 'Send login token'
 
-    if form.is_valid():
-        form.save(request)
-        return redirect(reverse_lazy('send_token_done'))
-    else:
-        return redirect(reverse_lazy('welcome'))
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.save(self.request)
+        return super(SendTokenView, self).form_valid(form)
 
 
 def login_email_sent(request):
