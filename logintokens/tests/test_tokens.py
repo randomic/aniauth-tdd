@@ -31,7 +31,7 @@ class TokenGeneratorTest(TestCase):
         token2 = self.generator.make_token(self.username)
         self.assertNotEqual(token1, token2)
 
-    def test_username_recovered_from_token(self):
+    def test_existing_user_token(self):
         """A consumed token should yield the original username.
 
         """
