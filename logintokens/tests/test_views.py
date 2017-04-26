@@ -6,7 +6,7 @@ from django.core import mail
 from django.shortcuts import reverse
 
 
-class SendLoginEmailTest(TestCase):
+class SendTokenTest(TestCase):
     """Tests for the view which sends the login email.
 
     """
@@ -14,8 +14,8 @@ class SendLoginEmailTest(TestCase):
         self.url = reverse('send_token')
         self.test_email = 'newvisitor@example.com'
 
-    def test_redirects_to_emailsent(self):
-        """The send_login_email url redirects to login_email_sent.
+    def test_redirects_send_token_done(self):
+        """The send_login_email url redirects to success page.
 
         """
         response = self.client.post(self.url, data={'email': self.test_email})
