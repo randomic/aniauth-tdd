@@ -30,13 +30,22 @@ class TokenGeneratorTest(TestCase):
         token2 = self.generator.make_token(self.test_email)
         self.assertNotEqual(token1, token2)
 
-    def test_email_recovered_from_token(self):
-        """A consumed token should yield the original user.
+    def test_username_recovered_from_token(self):
+        """A consumed token should yield the original username.
 
         """
-        token = self.generator.make_token(self.test_email)
-        email = self.generator.consume_token(token)
-        self.assertEqual(email, self.test_email)
+        USER.objects.create_user(self.username)
+        token = self.generator.make_token(self.username)
+        username = self.generator.consume_token(token)
+        self.assertEqual(username, self.username)
+
+    def test_new_user_token(self):
+        """A token which doesn't yet have a user should yield the username.
+
+        """
+        token = self.generator.make_token(self.username)
+        username = self.generator.consume_token(token)
+        self.assertEqual(username, self.username)
 
     def test_modified_token_fails(self):
         """A modified token returns None instead of a user.
