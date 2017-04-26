@@ -40,4 +40,4 @@ class LoginFormTest(TestCase):
         url_search = re.search(r'http://.+/.+$', email.body)
         self.assertIsNotNone(url_search)
         url = url_search.group(0)
-        self.assertIn(reverse('login'), url)
+        self.assertIn(reverse('token_login'), url)

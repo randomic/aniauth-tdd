@@ -11,7 +11,7 @@ class SendLoginEmailTest(TestCase):
 
     """
     def setUp(self):
-        self.url = reverse('send_login_email')
+        self.url = reverse('send_token')
         self.test_email = 'newvisitor@example.com'
 
     def test_redirects_to_emailsent(self):
@@ -19,7 +19,7 @@ class SendLoginEmailTest(TestCase):
 
         """
         response = self.client.post(self.url, data={'email': self.test_email})
-        self.assertRedirects(response, reverse('login_email_sent'))
+        self.assertRedirects(response, reverse('send_token_done'))
 
     def test_get_request_yields_405(self):
         """Accessing the view via get request is not allowed.
@@ -44,7 +44,7 @@ class LoginEmailSentTest(TestCase):
         """The view should use the template which contains a success message.
 
         """
-        response = self.client.get(reverse('login_email_sent'))
+        response = self.client.get(reverse('send_token_done'))
         self.assertTemplateUsed(response, 'accounts/login_email_sent.html')
         self.assertContains(response, 'Check your email')
 
@@ -57,5 +57,5 @@ class LoginViewTest(TestCase):
         """The view should use the template which contains a login button.
 
         """
-        response = self.client.get(reverse('login'))
+        response = self.client.get(reverse('token_login'))
         self.assertTemplateUsed(response, 'accounts/login.html')

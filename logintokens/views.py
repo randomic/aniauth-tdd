@@ -14,7 +14,7 @@ def send_login_email(request):
 
     if form.is_valid():
         form.save(request)
-        return redirect(reverse_lazy('login_email_sent'))
+        return redirect(reverse_lazy('send_token_done'))
     else:
         return redirect(reverse_lazy('welcome'))
 

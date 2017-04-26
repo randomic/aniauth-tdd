@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
     def generate_login_link(self, email, request):
         protocol = 'http'
         domain = get_current_site(request).domain
-        url = reverse_lazy('login')
+        url = reverse_lazy('token_login')
         token = LoginTokenGenerator().make_token(email)
         return '{}://{}{}?token={}'.format(protocol, domain, url, token)
 
