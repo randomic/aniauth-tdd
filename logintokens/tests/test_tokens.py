@@ -4,7 +4,7 @@
 import base64
 from time import sleep
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 
 from logintokens.tokens import LoginTokenGenerator
@@ -18,6 +18,7 @@ class TokenGeneratorTest(TestCase):
 
     """
     def setUp(self):
+        self.client = Client()
         self.username = 'newvisitor@example.com'
         self.generator = LoginTokenGenerator()
 
@@ -46,6 +47,16 @@ class TokenGeneratorTest(TestCase):
         token = self.generator.make_token(self.username)
         username = self.generator.consume_token(token)
         self.assertEqual(username, self.username)
+
+    def test_token_reuse(self):
+        """A token must be made invalid as soon as a user logs in.
+
+        """
+        user = USER.objects.create_user(self.username)
+        token = self.generator.make_token(self.username)
+        self.client.force_login(user)
+        username = self.generator.consume_token(token)
+        self.assertIsNone(username)
 
     def test_modified_token_fails(self):
         """A modified token returns None instead of a username.
