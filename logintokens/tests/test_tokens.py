@@ -18,16 +18,16 @@ class TokenGeneratorTest(TestCase):
 
     """
     def setUp(self):
-        self.test_email = 'newvisitor@example.com'
+        self.username = 'newvisitor@example.com'
         self.generator = LoginTokenGenerator()
 
     def test_unique_tokens_generated(self):
         """Tokens generated one second apart should differ.
 
         """
-        token1 = self.generator.make_token(self.test_email)
+        token1 = self.generator.make_token(self.username)
         sleep(1)
-        token2 = self.generator.make_token(self.test_email)
+        token2 = self.generator.make_token(self.username)
         self.assertNotEqual(token1, token2)
 
     def test_username_recovered_from_token(self):
@@ -48,10 +48,10 @@ class TokenGeneratorTest(TestCase):
         self.assertEqual(username, self.username)
 
     def test_modified_token_fails(self):
-        """A modified token returns None instead of a user.
+        """A modified token returns None instead of a username.
 
         """
-        token = self.generator.make_token(self.test_email)
+        token = self.generator.make_token(self.username)
 
         # Modify the email address which is 'signed'.
         split_token = base64.urlsafe_b64decode(
@@ -66,28 +66,28 @@ class TokenGeneratorTest(TestCase):
         self.assertIsNone(self.generator.consume_token(malicious_token))
 
     def test_expired_token_fails(self):
-        """A token which has expired returns None instead of a user.
+        """A token which has expired returns None instead of a username.
 
         """
-        token = self.generator.make_token(self.test_email)
+        token = self.generator.make_token(self.username)
         sleep(1)  # Ensure the token is more than 0 seconds old.
-        email = self.generator.consume_token(token, 0)
-        self.assertIsNone(email)
+        username = self.generator.consume_token(token, 0)
+        self.assertIsNone(username)
 
     def test_random_string_fails(self):
-        """A random non-token string returns None instead of a user.
+        """A random non-token string returns None instead of a username.
 
         """
         token = USER.objects.make_random_password()
-        email = self.generator.consume_token(token)
-        self.assertIsNone(email)
+        username = self.generator.consume_token(token)
+        self.assertIsNone(username)
 
     def test_tokenlike_string_fails(self):
-        """A random token-like string returns None instead of a user.
+        """A random token-like string returns None instead of a username.
 
         """
         token = base64.urlsafe_b64encode(
             USER.objects.make_random_password().encode()
         ).decode()
-        email = self.generator.consume_token(token)
-        self.assertIsNone(email)
+        username = self.generator.consume_token(token)
+        self.assertIsNone(username)
