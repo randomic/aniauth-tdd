@@ -2,14 +2,12 @@
 
 """
 import re
-import time
 
 from django.test import tag
 from django.core import mail
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
 
 
 MAX_WAIT = 10
