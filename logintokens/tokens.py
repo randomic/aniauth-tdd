@@ -14,9 +14,8 @@ class LoginTokenGenerator:
     """Generator for the timestamp signed tokens used for logging in.
 
     """
-    def __init__(self):
-        self.signer = TimestampSigner(
-            salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
+    signer = TimestampSigner(
+        salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
 
     def make_token(self, username):
         """Return a login token for the provided email.
@@ -56,3 +55,6 @@ class LoginTokenGenerator:
                 return None  # The user has logged in since this token was made
         except USER.DoesNotExist:
             return username
+
+
+default_token_generator = LoginTokenGenerator()

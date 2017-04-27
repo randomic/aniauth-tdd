@@ -7,7 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse_lazy
 
-from logintokens.tokens import LoginTokenGenerator
+from logintokens.tokens import default_token_generator
 
 
 USER = get_user_model()
@@ -20,7 +20,7 @@ class LoginForm(forms.Form):
         protocol = 'http'
         domain = get_current_site(request).domain
         url = reverse_lazy('token_login')
-        token = LoginTokenGenerator().make_token(email)
+        token = default_token_generator.make_token(email)
         return '{}://{}{}?token={}'.format(protocol, domain, url, token)
 
     def save(self, request):

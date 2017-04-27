@@ -7,7 +7,7 @@ from time import sleep
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 
-from logintokens.tokens import LoginTokenGenerator
+from logintokens.tokens import default_token_generator
 
 
 USER = get_user_model()
@@ -20,7 +20,7 @@ class TokenGeneratorTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.username = 'newvisitor@example.com'
-        self.generator = LoginTokenGenerator()
+        self.generator = default_token_generator
 
     def test_unique_tokens_generated(self):
         """Tokens generated one second apart should differ.
