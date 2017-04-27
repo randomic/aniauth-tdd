@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from aniauth.views import WelcomePageView
 from logintokens import urls as accounts_urls
 
 
 urlpatterns = [
+    url(r'^$', WelcomePageView.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include(accounts_urls)),
 ]

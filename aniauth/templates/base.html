@@ -10,7 +10,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.rawgit.com/thomaspark/bootswatch/v4/flatly/bootstrap.min.css" integrity="sha384-sWMkWMJ5pqIoUcXfA/+bJ2iWRBD6GWyIzk3itajLe/dRF2gvdOADdXLG9us75jbM" crossorigin="anonymous">
 
-        <title>{% block title %}BASE TEMPLATE{% endblock title %} | ANIAuth</title>
+        <title>{% block title %}{{ view.title }}{% endblock title %} | ANIAuth</title>
     </head>
     <body>
         <div class="bg-faded">
