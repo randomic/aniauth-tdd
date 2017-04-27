@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.signing import TimestampSigner, BadSignature
 
 
-USER = get_user_model()
+UserModel = get_user_model()
 
 
 class LoginTokenGenerator:
@@ -16,16 +16,17 @@ class LoginTokenGenerator:
     """
     signer = TimestampSigner(
         salt='aniauth-tdd.accounts.token.LoginTokenGenerator')
+    sep = signer.sep
 
     def make_token(self, username):
         """Return a login token for the provided email.
 
         """
         try:
-            user = USER.objects.get(username=username)
+            user = UserModel._default_manager.get_by_natural_key(username)
             login_timestamp = ('' if user.last_login is None
-                               else int(user.last_login.timestamp()))
-        except USER.DoesNotExist:
+                               else str(int(user.last_login.timestamp())))
+        except UserModel.DoesNotExist:
             login_timestamp = ''
 
         value = str('%s%s%s') % (username, self.signer.sep, login_timestamp)
@@ -38,23 +39,11 @@ class LoginTokenGenerator:
 
         """
         try:
-            result = self.signer.unsign(
+            return self.signer.unsign(
                 base64.urlsafe_b64decode(token.encode()), max_age
             )
         except (BadSignature, base64.binascii.Error):
             return None
-
-        username, login_timestamp = result.split(self.signer.sep)
-        try:
-            user = USER.objects.get(username=username)
-            user_login_timestamp = ('' if user.last_login is None
-                                    else int(user.last_login.timestamp()))
-            if user_login_timestamp == login_timestamp:
-                return username
-            else:
-                return None  # The user has logged in since this token was made
-        except USER.DoesNotExist:
-            return username
 
 
 default_token_generator = LoginTokenGenerator()
