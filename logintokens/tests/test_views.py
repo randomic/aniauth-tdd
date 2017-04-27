@@ -6,7 +6,19 @@ from django.core import mail
 from django.shortcuts import reverse
 
 
-class SendTokenTest(TestCase):
+class TokenLoginViewTest(TestCase):
+    """Tests for the view which verifies tokens and allows users to login.
+
+    """
+    def test_redirects_to_home(self):
+        """The view should eventually redirect to the homepage.
+
+        """
+        response = self.client.get(reverse('token_login'))
+        self.assertRedirects(response, reverse('home'))
+
+
+class SendTokenViewTest(TestCase):
     """Tests for the view which sends the login email.
 
     """
@@ -29,7 +41,7 @@ class SendTokenTest(TestCase):
         self.assertEqual(mail.outbox[0].to, [self.test_email])
 
 
-class LoginEmailSentTest(TestCase):
+class SendTokenDoneViewTest(TestCase):
     """Tests for the view which displays success message.
 
     """
@@ -38,17 +50,5 @@ class LoginEmailSentTest(TestCase):
 
         """
         response = self.client.get(reverse('send_token_done'))
-        self.assertTemplateUsed(response, 'accounts/login_email_sent.html')
+        self.assertTemplateUsed(response, 'logintokens/send_token_done.html')
         self.assertContains(response, 'Check your email')
-
-
-class LoginViewTest(TestCase):
-    """Tests for the view which verifies tokens and allows users to login.
-
-    """
-    def test_redirects_to_home(self):
-        """The view should eventually redirect to the homepage.
-
-        """
-        response = self.client.get(reverse('token_login'))
-        self.assertRedirects(response, reverse('home'))

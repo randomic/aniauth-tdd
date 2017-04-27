@@ -27,6 +27,6 @@ urlpatterns = [
 
     url(r'^send_token/$', views.SendTokenView.as_view(),
         name='send_token'),
-    url(r'^send_token/done/$', views.login_email_sent,
+    url(r'^send_token/done/$', views.SendTokenDoneView.as_view(),
         name='send_token_done'),
 ]
