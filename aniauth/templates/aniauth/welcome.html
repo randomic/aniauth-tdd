@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block nav_form %}
-    <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="{% url 'send_token' %}">
-        {% csrf_token %}
-        <input class="form-control mr-sm-2" name="email" id="id_email" type="email" placeholder="Email">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-    </form>
+    {% if user.is_authenticated %}
+        <button class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+    {% else %}
+        <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="{% url 'send_token' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" name="email" id="id_email" type="email" placeholder="Email">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
+    {% endif %}
 {%endblock nav_form %}
 
 {% block body %}
