@@ -80,6 +80,7 @@ TEMPLATES = [
     },
 ]
 
+MESSAGE_LEVEL = messages.DEBUG if DEBUG else messages.INFO
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
     messages.ERROR: 'danger',
