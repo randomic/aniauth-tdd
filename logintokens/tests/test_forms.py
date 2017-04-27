@@ -29,6 +29,20 @@ class LoginFormTest(TestCase):
         form = TokenLoginForm({'email': self.test_email})
         self.assertTrue(form.is_valid())
 
+    def test_valid_username_accpeted(self):
+        """Non-email input belonging to existing user should be valid.
+
+        """
+        form = TokenLoginForm({'email': self.existing_user.get_username()})
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_input_rejected(self):
+        """A non-email input which isn't an existing user should be invalid.
+
+        """
+        form = TokenLoginForm({'email': 'invalid'})
+        self.assertFalse(form.is_valid())
+
     def test_can_send_email(self):
         form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():
