@@ -13,7 +13,7 @@ from logintokens.tokens import default_token_generator
 USER = get_user_model()
 
 
-class LoginForm(forms.Form):
+class TokenLoginForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=254)
 
     def generate_login_link(self, email, request):

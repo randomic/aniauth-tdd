@@ -7,11 +7,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
 
-from logintokens.forms import LoginForm
+from logintokens.forms import TokenLoginForm
 
 
 class SendTokenView(FormView):
-    form_class = LoginForm
+    form_class = TokenLoginForm
     success_url = reverse_lazy('send_token_done')
     template_name = 'logintokens/send_token_form.html'
     title = 'Send login token'

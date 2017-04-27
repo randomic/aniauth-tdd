@@ -7,7 +7,7 @@ from django.test import TestCase, RequestFactory
 from django.core import mail
 from django.shortcuts import reverse
 
-from logintokens.forms import LoginForm
+from logintokens.forms import TokenLoginForm
 
 
 class LoginFormTest(TestCase):
@@ -19,21 +19,21 @@ class LoginFormTest(TestCase):
         self.request = RequestFactory().get('/')
 
     def test_valid_email_accepted(self):
-        form = LoginForm({'email': self.test_email})
+        form = TokenLoginForm({'email': self.test_email})
         self.assertTrue(form.is_valid())
 
     def test_invalid_email_declined(self):
-        form = LoginForm({'email': 'invalidemail'})
+        form = TokenLoginForm({'email': 'invalidemail'})
         self.assertFalse(form.is_valid())
 
     def test_can_send_email(self):
-        form = LoginForm({'email': self.test_email})
+        form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():
             form.save(self.request)
         self.assertEqual(len(mail.outbox), 1)
 
     def test_email_contains_link(self):
-        form = LoginForm({'email': self.test_email})
+        form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():
             form.save(self.request)
         email = mail.outbox[0]
