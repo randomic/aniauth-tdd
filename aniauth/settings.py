@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'logintokens',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'logintokens.backends.EmailOnlyAuthenticationBackend'
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
