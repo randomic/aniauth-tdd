@@ -37,7 +37,7 @@ class LoginFormTest(TestCase):
         if form.is_valid():
             form.save(self.request)
         email = mail.outbox[0]
-        url_search = re.search(r'http://.+/.+$', email.body)
+        url_search = re.search(r'https?://.+/.+$', email.body)
         self.assertIsNotNone(url_search)
         url = url_search.group(0)
         self.assertIn(reverse('token_login'), url)

@@ -17,7 +17,7 @@ class LoginForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=254)
 
     def generate_login_link(self, email, request):
-        protocol = 'http'
+        protocol = 'https' if request.is_secure() else 'http'
         domain = get_current_site(request).domain
         url = reverse_lazy('token_login')
         token = default_token_generator.make_token(email)
