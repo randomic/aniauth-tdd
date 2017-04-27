@@ -17,7 +17,7 @@ class TokenLoginView(RedirectView):
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token')
         if token:
-            user = authenticate(token=token)
+            user = authenticate(request, token=token)
             if user:
                 login(request, user)
         return super(TokenLoginView, self).get(request, *args, **kwargs)
