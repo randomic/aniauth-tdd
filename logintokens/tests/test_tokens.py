@@ -4,7 +4,7 @@
 import base64
 from time import sleep
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from logintokens.tokens import default_token_generator
@@ -18,9 +18,9 @@ class TokenGeneratorTest(TestCase):
 
     """
     def setUp(self):
-        self.client = Client()
-        self.new_username = 'newvisitor'
-        self.existing_user = USER.objects.create_user('existinguser')
+        self.new_username = 'tokengeneratortest-newvisitor'
+        self.existing_user = USER.objects.create_user(
+            'tokengeneratortest-existinguser')
         self.generator = default_token_generator
 
     def test_unique_tokens_generated(self):
