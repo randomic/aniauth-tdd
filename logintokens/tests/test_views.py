@@ -1,4 +1,4 @@
-"""accounts app unittests for views
+"""logintokens app unittests for views
 
 """
 from django.test import TestCase

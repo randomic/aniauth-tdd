@@ -1,4 +1,4 @@
-"""accounts app unittests for tokens
+"""logintokens app unittests for tokens
 
 """
 import base64
@@ -14,7 +14,7 @@ USER = get_user_model()
 
 
 class TokenGeneratorTest(TestCase):
-    """Tests for login token model.
+    """Tests for login token generator.
 
     """
     def setUp(self):

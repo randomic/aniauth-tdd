@@ -1,4 +1,4 @@
-"""accounts app unittests for forms
+"""logintokens app unittests for forms
 
 """
 import re
