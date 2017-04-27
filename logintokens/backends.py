@@ -23,7 +23,6 @@ class EmailOnlyAuthenticationBackend(object):
             except UserModel.DoesNotExist:
                 user = UserModel._default_manager.create_user(
                     username, username)
-                user.set_unusable_password()
                 return user
 
     def get_user(self, user_id):
