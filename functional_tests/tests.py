@@ -21,26 +21,20 @@ class NewVisitorTest(StaticLiveServerTestCase):
     """Tests for first-time users visiting the site.
 
     """
-    def setUp(self):
-        self.browser = webdriver.Chrome()
-        self.browser.maximize_window()
+    @classmethod
+    def setUpClass(cls):
+        super(NewVisitorTest, cls).setUpClass()
+        cls.browser = webdriver.Chrome()
+        cls.browser.maximize_window()
+        cls.browser.implicitly_wait(MAX_WAIT)
+        super(NewVisitorTest, cls).setUpClass()
 
-    def tearDown(self):
-        self.browser.refresh()
-        self.browser.quit()
-
-    def wait_for(self, func):
-        """Waits for up to MAX_WAIT seconds for an assertation to pass.
-
-        """
-        start_time = time.time()
-        while True:
-            try:
-                return func()
-            except (AssertionError, WebDriverException) as exc:
-                if time.time() - start_time > MAX_WAIT:
-                    raise exc
-                time.sleep(0.5)
+    @classmethod
+    def tearDownClass(cls):
+        cls.browser.refresh()
+        cls.browser.refresh()
+        cls.browser.quit()
+        super(NewVisitorTest, cls).tearDownClass()
 
     def test_anon_sees_welcome_page(self):
         """An unauthenticated user should be able to see the welcome page.
@@ -70,10 +64,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
         emailinput.send_keys(TEST_EMAIL)
         emailinput.send_keys(Keys.ENTER)
 
-        self.wait_for(lambda: self.assertIn(
+        self.assertIn(
             'Check your email',
-            self.browser.find_element_by_tag_name('body').text
-        ))
+            self.browser.find_element_by_tag_name('body').text)
 
         # Their email contains a message from ANIAuth.
         email = mail.outbox[0]
@@ -81,7 +74,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('Your login link for ANIAuth', email.subject)
 
         # The email contains a url link.
-        url_search = re.search(r'http://.+/.+$', email.body)
+        url_search = re.search(r'https?://.+/.+$', email.body)
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
@@ -89,6 +82,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.get(url)
 
         # The user is logged in.
-        self.wait_for(
-            lambda: self.browser.find_element_by_link_text('Logout')
-        )
+        self.assertIn(
+            'Logout',
+            self.browser.find_element_by_tag_name('nav').text)
+
+        self.browser.refresh()
