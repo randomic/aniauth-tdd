@@ -1,6 +1,7 @@
 """views for accounts app
 
 """
+from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
@@ -11,7 +12,15 @@ from logintokens.forms import TokenLoginForm
 
 
 class TokenLoginView(RedirectView):
-    url = reverse_lazy('home')
+    pattern_name = 'home'
+
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get('token')
+        if token:
+            user = authenticate(token=token)
+            if user:
+                login(request, user)
+        return super(TokenLoginView, self).get(request, *args, **kwargs)
 
 
 class SendTokenView(FormView):
