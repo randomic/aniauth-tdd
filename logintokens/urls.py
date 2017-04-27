@@ -20,7 +20,7 @@ import logintokens.views as views
 
 
 urlpatterns = [
-    url(r'^token_login/$', views.login,
+    url(r'^token_login/$', views.TokenLoginView.as_view(),
         name='token_login'),
     url(r'^logout/$', LogoutView.as_view(),
         name='logout'),

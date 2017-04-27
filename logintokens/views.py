@@ -5,9 +5,14 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 
 from logintokens.forms import TokenLoginForm
+
+
+class TokenLoginView(RedirectView):
+    url = reverse_lazy('home')
 
 
 class SendTokenView(FormView):
@@ -27,7 +32,3 @@ class SendTokenView(FormView):
 
 def login_email_sent(request):
     return render(request, 'accounts/login_email_sent.html')
-
-
-def login(request):
-    return render(request, 'accounts/login.html')

@@ -21,7 +21,7 @@ from logintokens import urls as accounts_urls
 
 
 urlpatterns = [
-    url(r'^$', WelcomePageView.as_view()),
+    url(r'^$', WelcomePageView.as_view(), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include(accounts_urls)),
 ]

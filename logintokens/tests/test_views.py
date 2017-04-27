@@ -46,9 +46,9 @@ class LoginViewTest(TestCase):
     """Tests for the view which verifies tokens and allows users to login.
 
     """
-    def test_uses_correct_template(self):
-        """The view should use the template which contains a login button.
+    def test_redirects_to_home(self):
+        """The view should eventually redirect to the homepage.
 
         """
         response = self.client.get(reverse('token_login'))
-        self.assertTemplateUsed(response, 'accounts/login.html')
+        self.assertRedirects(response, reverse('home'))
