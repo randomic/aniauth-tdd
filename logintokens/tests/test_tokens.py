@@ -19,42 +19,41 @@ class TokenGeneratorTest(TestCase):
     """
     def setUp(self):
         self.client = Client()
-        self.username = 'newvisitor@example.com'
+        self.new_username = 'newvisitor'
+        self.existing_user = USER.objects.create_user('existinguser')
         self.generator = default_token_generator
 
     def test_unique_tokens_generated(self):
         """Tokens generated one second apart should differ.
 
         """
-        token1 = self.generator.make_token(self.username)
+        token1 = self.generator.make_token(self.new_username)
         sleep(1)
-        token2 = self.generator.make_token(self.username)
+        token2 = self.generator.make_token(self.new_username)
         self.assertNotEqual(token1, token2)
 
     def test_existing_user_token(self):
         """A consumed token should yield the original username.
 
         """
-        USER.objects.create_user(self.username)
-        token = self.generator.make_token(self.username)
+        token = self.generator.make_token(self.existing_user.get_username())
         username = self.generator.consume_token(token)
-        self.assertEqual(username, self.username)
+        self.assertEqual(username, self.existing_user.get_username())
 
     def test_new_user_token(self):
         """A token which doesn't yet have a user should yield the username.
 
         """
-        token = self.generator.make_token(self.username)
+        token = self.generator.make_token(self.new_username)
         username = self.generator.consume_token(token)
-        self.assertEqual(username, self.username)
+        self.assertEqual(username, self.new_username)
 
     def test_token_reuse(self):
         """A token must be made invalid as soon as a user logs in.
 
         """
-        user = USER.objects.create_user(self.username)
-        token = self.generator.make_token(self.username)
-        self.client.force_login(user)
+        token = self.generator.make_token(self.existing_user.get_username())
+        self.client.force_login(self.existing_user)
         username = self.generator.consume_token(token)
         self.assertIsNone(username)
 
@@ -62,7 +61,7 @@ class TokenGeneratorTest(TestCase):
         """A modified token returns None instead of a username.
 
         """
-        token = self.generator.make_token(self.username)
+        token = self.generator.make_token(self.new_username)
 
         # Modify the email address which is 'signed'.
         split_token = base64.urlsafe_b64decode(
@@ -80,7 +79,7 @@ class TokenGeneratorTest(TestCase):
         """A token which has expired returns None instead of a username.
 
         """
-        token = self.generator.make_token(self.username)
+        token = self.generator.make_token(self.new_username)
         sleep(1)  # Ensure the token is more than 0 seconds old.
         username = self.generator.consume_token(token, 0)
         self.assertIsNone(username)
