@@ -34,8 +34,8 @@
                         </div>
                         {% if user.is_authenticated %}
                             <div class="navbar-nav ml-auto">
-                                <div class="nav-item nav-link mr-sm-2">{{ user }}</div>
-                                <button class="btn btn-outline-success my-2 my-sm-0" href="{% url 'logout' %}" id="id_logout">Logout</button>
+                                <a class="nav-item nav-link mr-sm-2" href="#">{{ user }}</a>
+                                <a href="{% url 'logout' %}" class="btn btn-outline-success my-2 my-sm-0">Logout</a>
                             </div>
                         {% else %}
                             <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="{% url 'send_token' %}">
