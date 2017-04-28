@@ -30,9 +30,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         cls.browser.refresh()
-        cls.browser.refresh()
         cls.browser.quit()
         super(NewVisitorTest, cls).tearDownClass()
+
+    def tearDown(self):
+        self.browser.refresh()
 
     def test_anon_sees_welcome_page(self):
         """An unauthenticated user should be able to see the welcome page.
