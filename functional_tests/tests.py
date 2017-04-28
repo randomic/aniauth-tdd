@@ -80,8 +80,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.get(url)
 
         # The user is logged in.
-        self.assertIn(
-            'Logout',
-            self.browser.find_element_by_tag_name('nav').text)
+        logout_button = self.browser.find_element_by_link_text('Logout')
 
-        self.browser.refresh()
+        # The user clicks logout.
+        logout_button.click()
+
+        # The user is logged out.
+        self.browser.find_element_by_id('id_email')
