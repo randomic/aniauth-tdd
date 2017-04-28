@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'logintokens',
 ]
 
+LOGOUT_REDIRECT_URL = '/'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'logintokens.backends.EmailOnlyAuthenticationBackend',
