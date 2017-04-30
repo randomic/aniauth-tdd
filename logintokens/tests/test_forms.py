@@ -43,6 +43,13 @@ class LoginFormTest(TestCase):
         form = TokenLoginForm({'email': 'invalid'})
         self.assertFalse(form.is_valid())
 
+    def test_empty_input_rejected(self):
+        """An empty input should be invalid.
+
+        """
+        form = TokenLoginForm({'email': ''})
+        self.assertFalse(form.is_valid())
+
     def test_can_send_email(self):
         form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():

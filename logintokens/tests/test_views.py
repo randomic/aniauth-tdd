@@ -64,14 +64,23 @@ class SendTokenViewTest(TestCase):
     """
     def setUp(self):
         self.url = reverse('send_token')
-        self.test_email = 'newvisitor@example.com'
+        self.test_email = 'sendtokenviewtest-newvisitor@example.com'
+
+    def test_invalid_input_show_error(self):
+        """If a non email is posted redirect with error.
+
+        """
+        response = self.client.post(self.url, data={'email': 'invalidinput'},
+                                    follow=True)
+        self.assertContains(response, 'Enter a valid email address.')
 
     def test_redirects_send_token_done(self):
         """The send_login_email url redirects to success page.
 
         """
-        response = self.client.post(self.url, data={'email': self.test_email})
-        self.assertRedirects(response, reverse('send_token_done'))
+        response = self.client.post(self.url, data={'email': self.test_email},
+                                    follow=True)
+        self.assertContains(response, 'Check your email')
 
     def test_view_sends_token_email(self):
         """The view should send an email to the email address from post.

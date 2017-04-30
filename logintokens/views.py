@@ -6,7 +6,9 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.base import RedirectView, TemplateView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import BaseFormView
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from logintokens.forms import TokenLoginForm
 
@@ -23,10 +25,9 @@ class TokenLoginView(RedirectView):
         return super(TokenLoginView, self).get(request, *args, **kwargs)
 
 
-class SendTokenView(FormView):
+class SendTokenView(BaseFormView):
     form_class = TokenLoginForm
-    success_url = reverse_lazy('send_token_done')
-    template_name = 'logintokens/send_token_form.html'
+    success_url = reverse_lazy('home')
     title = 'Send login token'
 
     @method_decorator(csrf_protect)
@@ -35,7 +36,16 @@ class SendTokenView(FormView):
 
     def form_valid(self, form):
         form.save(self.request)
+        messages.success(self.request, 'Check your email! A link has been sent to you, click on this link to complete the login process.')
         return super(SendTokenView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is valid, redirect to the supplied URL with errors.
+
+        """
+        for dummy_field, error in form.errors.items():
+            messages.warning(self.request, error.as_text())
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class SendTokenDoneView(TemplateView):
