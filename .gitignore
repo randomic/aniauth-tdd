@@ -1,5 +1,5 @@
 # Project specific ignores
-secret_key
+*secret*
 db.sqlite3
 chromedriver.exe
 
