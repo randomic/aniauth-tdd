@@ -16,23 +16,23 @@ from logintokens.tokens import default_token_generator
 USER = get_user_model()
 
 
-class TokenLoginForm(forms.Form):
-    email = UsernameField(  # For the majority of users it will be an email.
-        max_length=254,
-        widget=forms.TextInput(attrs={'autofocus': True}),
-    )
+class EmailOrUsernameField(UsernameField):
 
-    def clean(self):
-        # Some users will have a username different from their email.
-        email = self.cleaned_data['email']
+    def clean(self, value):
+        value = super(EmailOrUsernameField, self).clean(value)
         try:
-            user = USER._default_manager.get_by_natural_key(email)
-            clean_email = getattr(user, USER.EMAIL_FIELD)
+            user = USER._default_manager.get_by_natural_key(value)
+            email = getattr(user, USER.EMAIL_FIELD)
         except USER.DoesNotExist:
-            clean_email = email
-        validate_email(clean_email)
-        self.cleaned_data['clean_email'] = clean_email
-        return self.cleaned_data
+            email = value
+        validate_email(email)
+        return (value, email)
+
+
+class TokenLoginForm(forms.Form):
+    email = EmailOrUsernameField(  # For the majority of users it will be an email.
+        max_length=254
+    )
 
     def generate_login_link(self, username, request):
         protocol = 'https' if request.is_secure() else 'http'
@@ -45,15 +45,14 @@ class TokenLoginForm(forms.Form):
         """Generate a login token and send it to the email from the form.
 
         """
-        email = self.cleaned_data['email']
-        clean_email = self.cleaned_data['clean_email']
+        value, email = self.cleaned_data['email']
 
         body = 'To complete the login process, simply click on this link: {}'
-        login_link = self.generate_login_link(email, request)
+        login_link = self.generate_login_link(value, request)
 
         email_message = EmailMultiAlternatives(
             'Your login link for ANIAuth',
             body.format(login_link),
-            to=[clean_email]
+            to=[email]
         )
         email_message.send()
