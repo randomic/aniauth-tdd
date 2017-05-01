@@ -15,7 +15,7 @@ EMAIL_DOMAIN = next(iter(ALLOWED_HOSTS))
 
 DEFAULT_FROM_EMAIL = 'noreply@' + EMAIL_DOMAIN
 
-SERVER_EMAIL = 'root@{}' + EMAIL_DOMAIN
+SERVER_EMAIL = 'root@' + EMAIL_DOMAIN
 
 MEDIA_ROOT = str(DATA_DIR.joinpath('media_root'))
 
