@@ -121,6 +121,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'aniauth.urls'
 
+ADMINS = SECRETS.get('admins', [])
+
 SECRET_KEY = str(SECRETS['secret_key'])
 
 SECURE_BROWSER_XSS_FILTER = True
