@@ -121,7 +121,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'aniauth.urls'
 
-ADMINS = SECRETS.get('admins', [])
+ADMINS = [tuple(admin) for admin in SECRETS.get('admins', [])]
 
 SECRET_KEY = str(SECRETS['secret_key'])
 
