@@ -2,17 +2,19 @@
 
 """
 import base64
-from time import sleep
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from logintokens.tokens import default_token_generator
+from logintokens.tests.util import mock_time
 
 
 USER = get_user_model()
 
 
+@patch('time.time', mock_time.time)
 class TokenGeneratorTest(TestCase):
     """Tests for login token generator.
 
@@ -24,11 +26,11 @@ class TokenGeneratorTest(TestCase):
         self.generator = default_token_generator
 
     def test_unique_tokens_generated(self):
-        """Tokens generated one second apart should differ.
+        """Tokens generated 60 seconds apart should differ.
 
         """
         token1 = self.generator.make_token(self.new_username)
-        sleep(1)
+        mock_time.sleep(60)
         token2 = self.generator.make_token(self.new_username)
         self.assertNotEqual(token1, token2)
 
@@ -86,8 +88,8 @@ class TokenGeneratorTest(TestCase):
 
         """
         token = self.generator.make_token(self.new_username)
-        sleep(1)  # Ensure the token is more than 0 seconds old.
-        username = self.generator.consume_token(token, 0)
+        mock_time.sleep(1800)
+        username = self.generator.consume_token(token)
         self.assertIsNone(username)
 
     def test_random_string_fails(self):
