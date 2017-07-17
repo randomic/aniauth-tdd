@@ -40,7 +40,7 @@ class SendTokenView(BaseFormView):
         return super(SendTokenView, self).form_valid(form)
 
     def form_invalid(self, form):
-        """If the form is valid, redirect to the supplied URL with errors.
+        """If the form is invalid, redirect to the supplied URL with errors.
 
         """
         for dummy_field, error in form.errors.items():
