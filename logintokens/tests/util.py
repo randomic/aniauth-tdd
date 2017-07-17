@@ -22,4 +22,4 @@ class MockTime:
         """
         self.time_passed += seconds
 
-mock_time = MockTime()
+MOCK_TIME = MockTime()

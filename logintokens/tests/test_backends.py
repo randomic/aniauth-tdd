@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model, authenticate
 
 from logintokens.tokens import default_token_generator
-from logintokens.tests.util import mock_time
+from logintokens.tests.util import MOCK_TIME as mock_time
 
 
 USER = get_user_model()
