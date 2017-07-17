@@ -1,17 +1,19 @@
 """logintokens app unittests for backends
 
 """
-from time import sleep
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model, authenticate
 
 from logintokens.tokens import default_token_generator
+from logintokens.tests.util import MOCK_TIME as mock_time
 
 
 USER = get_user_model()
 
 
+@patch('time.time', mock_time.time)
 class EmailOnlyAuthenticationBackendTest(TestCase):
     """Tests for email only authentication backend
 
@@ -19,16 +21,16 @@ class EmailOnlyAuthenticationBackendTest(TestCase):
     def setUp(self):
         self.generator = default_token_generator
         self.new_username = 'emailonlyauthenticationbackendtest-newvisitor'
-        self.existing_user = USER._default_manager.create_user(
+        self.existing_user = USER.objects.create_user(
             'emailonlyauthenticationbackendtest-existinguser')
 
     def test_different_tokens_usable(self):
-        """Two differing tokens should both be usabe to authenticate.
+        """Two differing tokens should both be valid to authenticate.
 
         """
         username = self.existing_user.get_username()
         token1 = self.generator.make_token(username)
-        sleep(1)
+        mock_time.sleep(60)
         token2 = self.generator.make_token(username)
 
         self.assertNotEqual(token1, token2)
@@ -41,7 +43,7 @@ class EmailOnlyAuthenticationBackendTest(TestCase):
         """
         username = self.existing_user.get_username()
         token1 = self.generator.make_token(username)
-        sleep(1)
+        mock_time.sleep(60)
         token2 = self.generator.make_token(username)
 
         self.assertNotEqual(token1, token2)
