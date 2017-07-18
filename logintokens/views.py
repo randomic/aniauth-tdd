@@ -36,7 +36,10 @@ class SendTokenView(BaseFormView):
 
     def form_valid(self, form):
         form.save(self.request)
-        messages.success(self.request, 'Check your email! A link has been sent to you, click on this link to complete the login process.')
+        messages.success(
+            self.request,
+            ('Check your email! A link has been sent to you, click on this '
+             'link to complete the login process.'))
         return super(SendTokenView, self).form_valid(form)
 
     def form_invalid(self, form):
