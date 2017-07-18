@@ -88,16 +88,3 @@ class SendTokenViewTest(TestCase):
         """
         self.client.post(self.url, data={'email': self.test_email})
         self.assertEqual(mail.outbox[0].to, [self.test_email])
-
-
-class SendTokenDoneViewTest(TestCase):
-    """Tests for the view which displays success message.
-
-    """
-    def test_uses_correct_template(self):
-        """The view should use the template which contains a success message.
-
-        """
-        response = self.client.get(reverse('send_token_done'))
-        self.assertTemplateUsed(response, 'logintokens/send_token_done.html')
-        self.assertContains(response, 'Check your email')
