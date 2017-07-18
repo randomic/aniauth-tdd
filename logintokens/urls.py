@@ -20,11 +20,10 @@ import logintokens.views as views
 
 
 urlpatterns = [
-    url(r'^token_login/$', views.TokenLoginView.as_view(),
-        name='token_login'),
     url(r'^logout/$', LogoutView.as_view(),
         name='logout'),
-
+    url(r'^token_login/$', views.TokenLoginView.as_view(),
+        name='token_login'),
     url(r'^send_token/$', views.SendTokenView.as_view(),
         name='send_token'),
     url(r'^send_token/done/$', views.SendTokenDoneView.as_view(),
