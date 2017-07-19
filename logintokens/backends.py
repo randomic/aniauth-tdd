@@ -7,7 +7,7 @@ USER = get_user_model()
 
 
 
-class EmailOnlyAuthenticationBackend(object):
+class EmailOnlyAuthenticationBackend:
     token_generator = default_token_generator
 
     def authenticate(self, request, token=None, max_age=600):
