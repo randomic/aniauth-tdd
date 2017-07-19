@@ -23,6 +23,7 @@ class LoginTokenGenerator:
 
         """
         try:
+            # pylint: disable=protected-access
             user = USER._default_manager.get_by_natural_key(username)
             login_timestamp = ('' if user.last_login is None
                                else str(int(user.last_login.timestamp())))

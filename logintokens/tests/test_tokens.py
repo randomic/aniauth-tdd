@@ -16,6 +16,7 @@ USER = get_user_model()
 
 @patch('time.time', mock_time.time)
 class TokenGeneratorTest(TestCase):
+    # pylint: disable=protected-access
     """Tests for login token generator.
 
     """

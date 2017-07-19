@@ -21,6 +21,7 @@ class EmailOrUsernameField(UsernameField):
     def clean(self, value):
         value = super(EmailOrUsernameField, self).clean(value)
         try:
+            # pylint: disable=protected-access
             user = USER._default_manager.get_by_natural_key(value)
             email = getattr(user, USER.EMAIL_FIELD)
         except USER.DoesNotExist:

@@ -19,6 +19,7 @@ class EmailOnlyAuthenticationBackend:
         """Login/create the user from the provided login token.
 
         """
+        # pylint: disable=protected-access
         result = self.token_generator.consume_token(token, max_age)
         if result:
             username, login_timestamp = result.split(self.token_generator.sep)
@@ -38,6 +39,7 @@ class EmailOnlyAuthenticationBackend:
         """Return user object from primary key id.
 
         """
+        # pylint: disable=protected-access
         try:
             return USER._default_manager.get(pk=user_id)
         except USER.DoesNotExist:

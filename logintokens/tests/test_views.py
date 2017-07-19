@@ -17,6 +17,7 @@ class TokenLoginViewTest(TestCase):
 
     """
     def setUp(self):
+        # pylint: disable=protected-access
         self.url = reverse('token_login')
         self.generator = default_token_generator
         self.new_username = 'tokenloginviewtest-newvisitor'
@@ -49,6 +50,7 @@ class TokenLoginViewTest(TestCase):
         """A visitor without a user object can login with valid token.
 
         """
+        # pylint: disable=protected-access
         with self.assertRaises(USER.DoesNotExist):
             USER.objects.get_by_natural_key(self.new_username)
 
