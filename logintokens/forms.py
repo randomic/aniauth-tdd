@@ -35,7 +35,8 @@ class TokenLoginForm(forms.Form):
         max_length=254
     )
 
-    def generate_login_link(self, username, request):
+    @staticmethod
+    def generate_login_link(username, request):
         protocol = 'https' if request.is_secure() else 'http'
         domain = get_current_site(request).domain
         url = reverse_lazy('token_login')
