@@ -82,7 +82,7 @@ class SendTokenViewTest(TestCase):
         """
         response = self.client.post(self.url, data={'email': self.test_email},
                                     follow=True)
-        self.assertContains(response, 'Check your email')
+        self.assertContains(response, "We've emailed you a link")
 
     def test_view_sends_token_email(self):
         """The view should send an email to the email address from post.

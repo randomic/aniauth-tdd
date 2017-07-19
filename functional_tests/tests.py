@@ -65,16 +65,16 @@ class NewVisitorTest(StaticLiveServerTestCase):
         emailinput.send_keys(Keys.ENTER)
 
         self.assertIn(
-            'Check your email',
+            "We've emailed you a link",
             self.browser.find_element_by_tag_name('body').text)
 
         # Their email contains a message from ANIAuth.
         email = mail.outbox[0]
         self.assertIn(TEST_EMAIL, email.to)
-        self.assertIn('Your login link for ANIAuth', email.subject)
+        self.assertIn('Your login link', email.subject)
 
         # The email contains a url link.
-        url_search = re.search(r'https?://.+/.+$', email.body)
+        url_search = re.search(r'https?://.+/.+', email.body)
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
