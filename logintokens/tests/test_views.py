@@ -21,7 +21,7 @@ class TokenLoginViewTest(TestCase):
         self.url = reverse('token_login')
         self.generator = default_token_generator
         self.new_username = 'tokenloginviewtest-newvisitor'
-        self.existing_user = USER.objects.create_user(
+        self.existing_user = USER._default_manager.create_user(
             'tokenloginviewtest-existinguser')
 
     def test_redirects_to_home(self):
@@ -52,12 +52,12 @@ class TokenLoginViewTest(TestCase):
         """
         # pylint: disable=protected-access
         with self.assertRaises(USER.DoesNotExist):
-            USER.objects.get_by_natural_key(self.new_username)
+            USER._default_manager.get_by_natural_key(self.new_username)
 
         token = self.generator.make_token(self.new_username)
         self.client.get(self.url, data={'token': token})
         self.assertTrue(get_user(self.client).is_authenticated)
-        USER.objects.get_by_natural_key(self.new_username)
+        USER._default_manager.get_by_natural_key(self.new_username)
 
 
 class SendTokenViewTest(TestCase):

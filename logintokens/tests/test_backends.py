@@ -22,7 +22,7 @@ class EmailOnlyAuthenticationBackendTest(TestCase):
         # pylint: disable=protected-access
         self.generator = default_token_generator
         self.new_username = 'emailonlyauthenticationbackendtest-newvisitor'
-        self.existing_user = USER.objects.create_user(
+        self.existing_user = USER._default_manager.create_user(
             'emailonlyauthenticationbackendtest-existinguser')
 
     def test_different_tokens_usable(self):
