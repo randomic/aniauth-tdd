@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UsernameField
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse_lazy
+from django.template import loader
 
 from logintokens.tokens import default_token_generator
 
@@ -16,8 +16,20 @@ USER = get_user_model()
 
 
 class EmailOrUsernameField(UsernameField):
+    """Specialised field which fetches the user's email address when cleaned.
 
+    """
     def clean(self, value):
+        """If user exists fetch their email.
+
+        If the value is the username of an existing user, return a tuple
+        containing the username and the user's email address.
+
+        If the value is not the username of an existing user, check that it is
+        and email address and return a tuple containing two copies of it. This
+        is so that a new user can be created.
+
+        """
         value = super(EmailOrUsernameField, self).clean(value)
         try:
             # pylint: disable=protected-access
@@ -30,30 +42,50 @@ class EmailOrUsernameField(UsernameField):
 
 
 class TokenLoginForm(forms.Form):
+    """Sends a login link to the user specified in the only field.
+
+    """
     email = EmailOrUsernameField(  # For majority of users it will be an email.
         max_length=254
     )
 
     @staticmethod
-    def generate_login_link(username, request):
-        protocol = 'https' if request.is_secure() else 'http'
-        domain = get_current_site(request).domain
-        url = reverse_lazy('token_login')
-        token = default_token_generator.make_token(username)
-        return '{}://{}{}?token={}'.format(protocol, domain, url, token)
+    def send_mail(email_template_subject, email_template_content,
+                  context, from_email, to_email):
+        """Sends a django.core.mail.EmailMultiAlternatives to `to_email`.
 
-    def save(self, request):
+        """
+        subject = loader.render_to_string(email_template_subject, context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(email_template_content, context)
+
+        email_message = EmailMultiAlternatives(
+            subject, body, from_email, [to_email])
+        email_message.send()
+
+    def save(
+            self, email_templates=None, from_email=None,
+            token_generator=default_token_generator, request=None):
         """Generate a login token and send it to the email from the form.
 
         """
-        username, email = self.cleaned_data['email']
+        email_templates = email_templates or {
+            'subject': 'logintokens/login_token_email_subject.txt',
+            'content': 'logintokens/login_token_email_content.txt',
+        }
+        username, email = self.cleaned_data["email"]
 
-        body = 'To complete the login process, simply click on this link: {}'
-        login_link = self.generate_login_link(username, request)
+        current_site = get_current_site(request)
+        site_name = current_site.name
+        domain = current_site.domain
 
-        email_message = EmailMultiAlternatives(
-            'Your login link for ANIAuth',
-            body.format(login_link),
-            to=[email]
-        )
-        email_message.send()
+        context = {
+            'site_name': site_name,
+            'protocol': 'https' if request.is_secure() else 'http',
+            'domain': domain,
+            'token': token_generator.make_token(username),
+        }
+        self.send_mail(email_templates['subject'],
+                       email_templates['content'],
+                       context, from_email, email)
