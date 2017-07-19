@@ -35,7 +35,8 @@ class EmailOnlyAuthenticationBackend:
                     username, username)
                 return user
 
-    def get_user(self, user_id):
+    @staticmethod
+    def get_user(user_id):
         """Return user object from primary key id.
 
         """
