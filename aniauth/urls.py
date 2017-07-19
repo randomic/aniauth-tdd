@@ -17,11 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from aniauth.views import WelcomePageView
-from logintokens import urls as accounts_urls
+from logintokens import urls as logintokens_urls
 
 
 urlpatterns = [
     url(r'^$', WelcomePageView.as_view(), name='home'),
+
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include(accounts_urls)),
+
+    url(r'^accounts/', include(logintokens_urls)),
 ]

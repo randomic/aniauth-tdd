@@ -16,12 +16,13 @@ USER = get_user_model()
 
 @patch('time.time', mock_time.time)
 class TokenGeneratorTest(TestCase):
+    # pylint: disable=protected-access
     """Tests for login token generator.
 
     """
     def setUp(self):
         self.new_username = 'tokengeneratortest-newvisitor'
-        self.existing_user = USER.objects.create_user(
+        self.existing_user = USER._default_manager.create_user(
             'tokengeneratortest-existinguser')
         self.generator = default_token_generator
 
@@ -96,7 +97,7 @@ class TokenGeneratorTest(TestCase):
         """A random non-token string returns None instead of a username.
 
         """
-        token = USER.objects.make_random_password()
+        token = USER._default_manager.make_random_password()
         username = self.generator.consume_token(token)
         self.assertIsNone(username)
 
@@ -105,7 +106,7 @@ class TokenGeneratorTest(TestCase):
 
         """
         token = base64.urlsafe_b64encode(
-            USER.objects.make_random_password().encode()
+            USER._default_manager.make_random_password().encode()
         ).decode()
         username = self.generator.consume_token(token)
         self.assertIsNone(username)

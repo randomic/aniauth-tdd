@@ -17,10 +17,11 @@ class TokenLoginViewTest(TestCase):
 
     """
     def setUp(self):
+        # pylint: disable=protected-access
         self.url = reverse('token_login')
         self.generator = default_token_generator
         self.new_username = 'tokenloginviewtest-newvisitor'
-        self.existing_user = USER.objects.create_user(
+        self.existing_user = USER._default_manager.create_user(
             'tokenloginviewtest-existinguser')
 
     def test_redirects_to_home(self):
@@ -49,13 +50,14 @@ class TokenLoginViewTest(TestCase):
         """A visitor without a user object can login with valid token.
 
         """
+        # pylint: disable=protected-access
         with self.assertRaises(USER.DoesNotExist):
-            USER.objects.get_by_natural_key(self.new_username)
+            USER._default_manager.get_by_natural_key(self.new_username)
 
         token = self.generator.make_token(self.new_username)
         self.client.get(self.url, data={'token': token})
         self.assertTrue(get_user(self.client).is_authenticated)
-        USER.objects.get_by_natural_key(self.new_username)
+        USER._default_manager.get_by_natural_key(self.new_username)
 
 
 class SendTokenViewTest(TestCase):
@@ -80,7 +82,7 @@ class SendTokenViewTest(TestCase):
         """
         response = self.client.post(self.url, data={'email': self.test_email},
                                     follow=True)
-        self.assertContains(response, 'Check your email')
+        self.assertContains(response, "We've emailed you a link")
 
     def test_view_sends_token_email(self):
         """The view should send an email to the email address from post.
@@ -88,16 +90,3 @@ class SendTokenViewTest(TestCase):
         """
         self.client.post(self.url, data={'email': self.test_email})
         self.assertEqual(mail.outbox[0].to, [self.test_email])
-
-
-class SendTokenDoneViewTest(TestCase):
-    """Tests for the view which displays success message.
-
-    """
-    def test_uses_correct_template(self):
-        """The view should use the template which contains a success message.
-
-        """
-        response = self.client.get(reverse('send_token_done'))
-        self.assertTemplateUsed(response, 'logintokens/send_token_done.html')
-        self.assertContains(response, 'Check your email')
