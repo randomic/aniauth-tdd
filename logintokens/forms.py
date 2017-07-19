@@ -3,7 +3,6 @@
 """
 from django import forms
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UsernameField
 from django.core.mail import EmailMultiAlternatives
