@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.signing import TimestampSigner, BadSignature
 
 
-UserModel = get_user_model()
+USER = get_user_model()
 
 
 class LoginTokenGenerator:
@@ -23,10 +23,10 @@ class LoginTokenGenerator:
 
         """
         try:
-            user = UserModel._default_manager.get_by_natural_key(username)
+            user = USER._default_manager.get_by_natural_key(username)
             login_timestamp = ('' if user.last_login is None
                                else str(int(user.last_login.timestamp())))
-        except UserModel.DoesNotExist:
+        except USER.DoesNotExist:
             login_timestamp = ''
 
         value = str('%s%s%s') % (username, self.signer.sep, login_timestamp)

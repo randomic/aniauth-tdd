@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from logintokens.tokens import default_token_generator
 
 
-UserModel = get_user_model()
+USER = get_user_model()
+
 
 
 class EmailOnlyAuthenticationBackend(object):
@@ -14,19 +15,19 @@ class EmailOnlyAuthenticationBackend(object):
         if result:
             username, login_timestamp = result.split(self.token_generator.sep)
             try:
-                user = UserModel._default_manager.get_by_natural_key(
+                user = USER._default_manager.get_by_natural_key(
                     username)
                 _login_timestamp = ('' if user.last_login is None
                                     else str(int(user.last_login.timestamp())))
                 if login_timestamp == _login_timestamp:
                     return user
-            except UserModel.DoesNotExist:
-                user = UserModel._default_manager.create_user(
+            except USER.DoesNotExist:
+                user = USER._default_manager.create_user(
                     username, username)
                 return user
 
     def get_user(self, user_id):
         try:
-            return UserModel.objects.get(pk=user_id)
-        except UserModel.DoesNotExist:
+            return USER._default_manager.get(pk=user_id)
+        except USER.DoesNotExist:
             return None
