@@ -1,3 +1,6 @@
+"""Backend for logintokens authentication.
+
+"""
 from django.contrib.auth import get_user_model
 
 from logintokens.tokens import default_token_generator
