@@ -46,10 +46,10 @@ class TokenLoginForm(forms.Form):
         """Generate a login token and send it to the email from the form.
 
         """
-        value, email = self.cleaned_data['email']
+        username, email = self.cleaned_data['email']
 
         body = 'To complete the login process, simply click on this link: {}'
-        login_link = self.generate_login_link(value, request)
+        login_link = self.generate_login_link(username, request)
 
         email_message = EmailMultiAlternatives(
             'Your login link for ANIAuth',
