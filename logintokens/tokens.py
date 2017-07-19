@@ -47,4 +47,4 @@ class LoginTokenGenerator:
             return None
 
 
-default_token_generator = LoginTokenGenerator()
+default_token_generator = LoginTokenGenerator()  # pylint: disable=invalid-name
