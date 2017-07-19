@@ -6,11 +6,16 @@ from logintokens.tokens import default_token_generator
 USER = get_user_model()
 
 
-
 class EmailOnlyAuthenticationBackend:
+    """Authenticates by consuming a provided login token.
+
+    """
     token_generator = default_token_generator
 
     def authenticate(self, request, token=None, max_age=600):
+        """Login/create the user from the provided login token.
+
+        """
         result = self.token_generator.consume_token(token, max_age)
         if result:
             username, login_timestamp = result.split(self.token_generator.sep)
@@ -27,6 +32,9 @@ class EmailOnlyAuthenticationBackend:
                 return user
 
     def get_user(self, user_id):
+        """Return user object from primary key id.
+
+        """
         try:
             return USER._default_manager.get(pk=user_id)
         except USER.DoesNotExist:
