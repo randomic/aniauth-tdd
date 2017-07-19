@@ -32,7 +32,7 @@ class SendTokenView(BaseFormView):
 
     @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+        return super(SendTokenView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         form.save(self.request)
