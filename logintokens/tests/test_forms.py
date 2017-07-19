@@ -53,15 +53,15 @@ class LoginFormTest(TestCase):
     def test_can_send_email(self):
         form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():
-            form.save(self.request)
+            form.save(request=self.request)
         self.assertEqual(len(mail.outbox), 1)
 
     def test_email_contains_link(self):
         form = TokenLoginForm({'email': self.test_email})
         if form.is_valid():
-            form.save(self.request)
+            form.save(request=self.request)
         email = mail.outbox[0]
-        url_search = re.search(r'https?://.+/.+$', email.body)
+        url_search = re.search(r'https?://.+/.+', email.body)
         self.assertIsNotNone(url_search)
         url = url_search.group(0)
         self.assertIn(reverse('token_login'), url)
@@ -72,7 +72,7 @@ class LoginFormTest(TestCase):
         """
         form = TokenLoginForm({'email': self.existing_user.get_username()})
         if form.is_valid():
-            form.save(self.request)
+            form.save(request=self.request)
         email = mail.outbox[0]
         self.assertEqual(
             email.to,

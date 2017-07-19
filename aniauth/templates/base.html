@@ -38,11 +38,13 @@
                                 <a href="{% url 'logout' %}" class="btn btn-outline-success my-2 my-sm-0">Logout</a>
                             </div>
                         {% else %}
-                            <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="{% url 'send_token' %}">
-                                {% csrf_token %}
-                                <input type="text" class="form-control mr-sm-2" placeholder="Email" spellcheck="false" id="id_email" name="email">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-                            </form>
+                            {% block nav_form %}
+                                <form class="form-inline ml-auto my-2 my-lg-0" method="POST" action="{% url 'send_token' %}">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control mr-sm-2" placeholder="Email" spellcheck="false" id="id_email" name="email">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+                                </form>
+                            {% endblock nav_form %}
                         {% endif %}
                     </div>
                 </div
