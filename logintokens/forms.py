@@ -31,7 +31,7 @@ class EmailOrUsernameField(UsernameField):
 
 
 class TokenLoginForm(forms.Form):
-    email = EmailOrUsernameField(  # For the majority of users it will be an email.
+    email = EmailOrUsernameField(  # For majority of users it will be an email.
         max_length=254
     )
 
