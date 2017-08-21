@@ -2,5 +2,5 @@ from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 
-class SubmitAPIView(FormView):
+class AddAPIView(FormView):
     pass

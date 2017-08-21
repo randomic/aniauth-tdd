@@ -19,6 +19,6 @@ import evexml.views as views
 
 
 urlpatterns = [
-    url(r'^logout/$', views.SubmitAPIView.as_view(),
-        name='eveapi_submit'),
+    url(r'^add/$', views.AddAPIView.as_view(),
+        name='eveapi_add'),
 ]
