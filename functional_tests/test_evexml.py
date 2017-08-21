@@ -41,8 +41,8 @@ class SubmissionTest(StaticLiveServerTestCase):
 
         """
         # They browse to the eve api keys page.
-        url = self.live_server_url + reverse('eveapi_submit')
-        self.browser.get(self.live_server_url)
+        url = self.live_server_url + reverse('eveapi_add')
+        self.browser.get(url)
         # They see input boxes for keyID and vCode.
         keyid_input = self.browser.find_element_by_name('keyID')
         vcode_input = self.browser.find_element_by_name('vCode')
