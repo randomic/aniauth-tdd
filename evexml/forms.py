@@ -5,8 +5,8 @@ import evelink.account
 
 
 class AddAPIForm(forms.Form):
-    keyID = IntegerField()
-    vCode = CharField(max_length=64, min_length=1)
+    key_id = IntegerField()
+    v_code = CharField(max_length=64, min_length=1)
 
     def clean(self):
         self._clean()
@@ -16,14 +16,16 @@ class AddAPIForm(forms.Form):
         """Check the access mask and characters of the supplied keypair.
 
         """
-        api_key = (self.cleaned_data['keyID'], self.cleaned_data['vCode'])
-        api = evelink.api.API(api_key=api_key)
-        account = evelink.account.Account(api)
-        try:
-            key_info = account.key_info().result
-        except evelink.api.APIError as error:
-            self.add_error(None, error.message)
-            return
+        key_id = self.cleaned_data.get('key_id')
+        v_code = self.cleaned_data.get('v_code')
+        if key_id and v_code:
+            api = evelink.api.API(api_key=(key_id, v_code))
+            account = evelink.account.Account(api)
+            try:
+                key_info = account.key_info().result
+            except evelink.api.APIError as error:
+                self.add_error(None, error.message)
+                return
 
-        if key_info['type'] != 'account':
-            self.add_error(None, 'The API key should select Character: All')
+            if key_info['type'] != 'account':
+                self.add_error(None, 'The API key should select Character: All')
