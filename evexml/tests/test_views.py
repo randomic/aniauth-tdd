@@ -23,8 +23,11 @@ class AddAPIViewTest(TestCase):
             cls.testkeys = secrets['apikeys']
         cls.url = reverse('eveapi_add')
 
+    def test_view_renders(self):
+        self.client.get(self.url)
+
     def test_invalid_api(self):
-        """Ensure an invalid api is rejected and not saved.
+        """Invalid api is rejected and not saved.
 
         """
         response = self.client.post(self.url, data={
@@ -35,7 +38,7 @@ class AddAPIViewTest(TestCase):
 
     # Mask: 4294967295
     def test_api_full_all(self):
-        """Ensure full and account-wide keypair is accepted and saved.
+        """Full and account-wide keypair is accepted and saved.
 
         """
         keypair = self.testkeys['full']['all']
@@ -47,7 +50,7 @@ class AddAPIViewTest(TestCase):
             APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_full_char_corp(self):
-        """Ensure full but corp character only keypair is rejected.
+        """Full but corp character only keypair is rejected but saved.
 
         """
         keypair = self.testkeys['full']['char_corp']
@@ -55,9 +58,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_full_char_noncorp(self):
-        """Ensure full but non-corp character only keypair is rejected.
+        """Full but non-corp character only keypair is rejected but saved
 
         """
         keypair = self.testkeys['full']['char_noncorp']
@@ -65,10 +70,12 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     # Mask: 4294901631
     def test_api_partial_all(self):
-        """Ensure partial and account-wide keypair is rejected.
+        """Partial and account-wide keypair is rejected but saved.
 
         """
         keypair = self.testkeys['partial']['all']
@@ -76,9 +83,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_partial_char_corp(self):
-        """Ensure partial and corp character only keypair is rejected.
+        """Partial and corp character only keypair is rejected but saved.
 
         """
         keypair = self.testkeys['partial']['char_corp']
@@ -86,9 +95,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_partial_char_noncorp(self):
-        """Ensure partial and non-corp character only keypair is rejected.
+        """Partial and non-corp character only keypair is rejected but saved.
 
         """
         keypair = self.testkeys['partial']['char_noncorp']
@@ -96,10 +107,12 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     # Mask: 0
     def test_api_blank_all(self):
-        """Ensure blank and account-wide keypair is rejected.
+        """Blank and account-wide keypair is rejected but saved.
 
         """
         keypair = self.testkeys['blank']['all']
@@ -107,9 +120,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_blank_char_corp(self):
-        """Ensure blank and corp character only keypair is rejected.
+        """Blank and corp character only keypair is rejected but saved.
 
         """
         keypair = self.testkeys['blank']['char_corp']
@@ -117,9 +132,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_blank_char_noncorp(self):
-        """Ensure full but non-corp character only keypair is rejected.
+        """Full but non-corp character only keypair is rejected but saved.
 
         """
         keypair = self.testkeys['blank']['char_noncorp']
@@ -127,10 +144,12 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     # Expires
     def test_api_expires_all(self):
-        """Ensure full and account-wide but expiring keypair is rejected.
+        """Full and account-wide but expiring keypair is rejected but saved.
 
         """
         keypair = self.testkeys['full_expires']['all']
@@ -138,9 +157,10 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
-
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
     def test_api_expires_char_corp(self):
-        """Ensure full but corp character only, expiring keypair is rejected.
+        """Full but corp character only expiring keypair is rejected but saved
 
         """
         keypair = self.testkeys['full_expires']['char_corp']
@@ -148,9 +168,11 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_expires_char_noncorp(self):
-        """Ensure full but non-corp character, expiring keypair is rejected.
+        """Full but non-corp character expiring keypair is rejected but saved.
 
         """
         keypair = self.testkeys['full_expires']['char_noncorp']
@@ -158,3 +180,5 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
