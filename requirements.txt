@@ -1,2 +1,2 @@
-django==1.11.4
-evelink==0.7.5
+Django==1.11.4
+EVELink==0.7.5
