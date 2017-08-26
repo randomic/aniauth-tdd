@@ -9,8 +9,9 @@ class AddAPIForm(forms.Form):
     v_code = CharField(max_length=64, min_length=1)
 
     def clean(self):
+        super(AddAPIForm, self).clean()
         self._clean()
-        return super(AddAPIForm, self).clean()
+        return self.cleaned_data
 
     def _clean(self):
         """Check the access mask and characters of the supplied keypair.
