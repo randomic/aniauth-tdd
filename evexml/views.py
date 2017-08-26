@@ -6,7 +6,7 @@ from evexml.forms import AddAPIForm
 
 
 class AddAPIView(FormView):
-    template_name = 'evexml/eveapi_add.html'
+    template_name = 'evexml/eveapi_add_form.html'
     form_class = AddAPIForm
     success_url = reverse_lazy('eveapi_added')
 
