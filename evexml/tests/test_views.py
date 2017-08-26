@@ -7,6 +7,8 @@ from django.conf import settings
 from django.test import TestCase
 from django.shortcuts import reverse
 
+from evexml.models import APIKeyPair
+
 
 class AddAPIViewTest(TestCase):
     """Tests for the view which displays the "Add API" form.
@@ -22,17 +24,19 @@ class AddAPIViewTest(TestCase):
         cls.url = reverse('eveapi_add')
 
     def test_invalid_api(self):
-        """Ensure an invalid api is rejected.
+        """Ensure an invalid api is rejected and not saved.
 
         """
         response = self.client.post(self.url, data={
             'key_id': '1',
             'v_code': 'test'}, follow=True)
         self.assertContains(response, 'problem')
+        self.assertEqual(APIKeyPair.objects.filter(key_id=1).count(), 0)
+
 
     # Mask: 4294967295
     def test_api_full_all(self):
-        """Ensure full and account-wide keypair is accepted.
+        """Ensure full and account-wide keypair is accepted and saved.
 
         """
         keypair = self.testkeys['full']['all']
@@ -40,6 +44,9 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'success')
+        self.assertGreater(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 0)
+
 
     def test_api_full_char_corp(self):
         """Ensure full but corp character only keypair is rejected.
