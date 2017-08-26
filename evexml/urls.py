@@ -21,4 +21,6 @@ import evexml.views as views
 urlpatterns = [
     url(r'^add/$', views.AddAPIView.as_view(),
         name='eveapi_add'),
+    url(r'^added', views.AddedAPIView.as_view(),
+        name='eveapi_added'),
 ]
