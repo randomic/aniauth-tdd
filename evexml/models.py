@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class APIKeyPair(models.Model):
+    key_id = models.IntegerField(verbose_name='keyID')
+    v_code = models.CharField(verbose_name='vCode', max_length=32)
