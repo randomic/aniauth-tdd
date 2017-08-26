@@ -33,7 +33,6 @@ class AddAPIViewTest(TestCase):
         self.assertContains(response, 'problem')
         self.assertEqual(APIKeyPair.objects.filter(key_id=1).count(), 0)
 
-
     # Mask: 4294967295
     def test_api_full_all(self):
         """Ensure full and account-wide keypair is accepted and saved.
@@ -44,9 +43,8 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'success')
-        self.assertGreater(
-            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 0)
-
+        self.assertEqual(
+            APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
 
     def test_api_full_char_corp(self):
         """Ensure full but corp character only keypair is rejected.
