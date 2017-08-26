@@ -20,6 +20,9 @@ class AddAPIFormTest(TestCase):
 
     # Mask: 4294967295
     def test_api_full_all(self):
+        """Ensure full and account-wide keypair is valid.
+
+        """
         keypair = self.testkeys['full']['all']
         form = AddAPIForm({
             'keyID': keypair['keyID'],
@@ -27,6 +30,9 @@ class AddAPIFormTest(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_api_full_char_corp(self):
+        """Ensure full but corp character only keypair is invalid.
+
+        """
         keypair = self.testkeys['full']['char_corp']
         form = AddAPIForm({
             'keyID': keypair['keyID'],
@@ -34,6 +40,9 @@ class AddAPIFormTest(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_api_full_char_noncorp(self):
+        """Ensure full but non-corp character only keypair is invalid.
+
+        """
         keypair = self.testkeys['full']['char_noncorp']
         form = AddAPIForm({
             'keyID': keypair['keyID'],
