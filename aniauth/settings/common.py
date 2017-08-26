@@ -31,6 +31,7 @@ DATABASES = {
 INSTALLED_APPS = [
     'aniauth',
     'logintokens',
+    'evexml',
 
     'django.contrib.admin',
     'django.contrib.auth',
