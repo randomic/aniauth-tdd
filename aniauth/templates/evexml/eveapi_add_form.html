@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<p>To login simply enter your email address below, and click the link that is sent to you.</p>
+
+{% if form.errors %}
+    <p>At least one problem occurred while checking the supplied API key:</p>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p><input type="number" class="form-control" placeholder="keyID" id="id_keyID" name="keyID"></p>
+    <p><input type="text" maxlength="32" class="form-control" placeholder="vCode" id="id_vCode" name="vCode"></p>
+    <p><button class="btn btn-outline-success" type="submit">Submit</button></p>
+</form>
+
+{% endblock %}
