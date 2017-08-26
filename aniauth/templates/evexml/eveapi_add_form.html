@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<p>To login simply enter your email address below, and click the link that is sent to you.</p>
+<p>Please enter a full API key, if you have not yet created one <a href="https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=4294967295">click here</a>.</p>
 
 {% if form.errors %}
     <p>At least one problem occurred while checking the supplied API key:</p>
@@ -11,8 +11,10 @@
 <form method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <p><input type="number" class="form-control" placeholder="keyID" id="id_keyID" name="keyID"></p>
-    <p><input type="text" maxlength="32" class="form-control" placeholder="vCode" id="id_vCode" name="vCode"></p>
+    <p><input type="number" class="form-control" placeholder="keyID" id="id_key_id" name="key_id"></p>
+    {{ form.key_id.errors }}
+    <p><input type="text" maxlength="32" class="form-control" placeholder="vCode" id="id_v_code" name="v_code"></p>
+    {{ form.v_code.errors }}
     <p><button class="btn btn-outline-success" type="submit">Submit</button></p>
 </form>
 
