@@ -18,6 +18,15 @@ class AddAPIViewTest(TestCase):
             cls.testkeys = secrets['apikeys']
         cls.url = reverse('eveapi_add')
 
+    def test_invalid_api(self):
+        """Ensure an invalid api is rejected.
+
+        """
+        response = self.client.post(self.url, data={
+            'keyID': '1',
+            'vCode': 'test'}, follow=True)
+        self.assertContains(response, 'problem')
+
     # Mask: 4294967295
     def test_api_full_all(self):
         """Ensure full and account-wide keypair is accepted.

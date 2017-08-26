@@ -18,6 +18,15 @@ class AddAPIFormTest(TestCase):
             secrets = json.load(handle)
             cls.testkeys = secrets['apikeys']
 
+    def test_invalid_api(self):
+        """Ensure an invalid api is rejected.
+
+        """
+        form = AddAPIForm({
+            'keyID': '1',
+            'vCode': 'test'})
+        self.assertFalse(form.is_valid())
+
     # Mask: 4294967295
     def test_api_full_all(self):
         """Ensure full and account-wide keypair is valid.
