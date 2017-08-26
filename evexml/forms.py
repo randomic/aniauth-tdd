@@ -1,22 +1,19 @@
-from django import forms
-from django.forms.fields import IntegerField, CharField
-
 import evelink.account
+from django.forms.models import ModelForm
+
+from evexml.models import APIKeyPair
 
 
-class AddAPIForm(forms.Form):
-    key_id = IntegerField()
-    v_code = CharField(max_length=64, min_length=1)
+class AddAPIForm(ModelForm):
+    class Meta:
+        model = APIKeyPair
+        fields = '__all__'
 
-    def clean(self):
-        super(AddAPIForm, self).clean()
-        self._clean()
-        return self.cleaned_data
-
-    def _clean(self):
+    def full_clean(self):
         """Check the access mask and characters of the supplied keypair.
 
         """
+        super(AddAPIForm, self).full_clean()
         key_id = self.cleaned_data.get('key_id')
         v_code = self.cleaned_data.get('v_code')
         if not (key_id and v_code):
@@ -25,14 +22,16 @@ class AddAPIForm(forms.Form):
         api = evelink.api.API(api_key=(key_id, v_code))
         account = evelink.account.Account(api)
         try:
-            key_info = account.key_info().result
+            self.key_info = account.key_info().result
         except evelink.api.APIError as error:
             self.add_error(None, error.message)
             return
 
-        if key_info['type'] != 'account':
+        self.save()
+
+        if self.key_info['type'] != 'account':
             self.add_error(None, 'The API key should select Character: All')
-        if key_info['access_mask'] != 4294967295:
+        if self.key_info['access_mask'] != 4294967295:
             self.add_error(None, 'The API key should have full access')
-        if key_info['expire_ts']:
+        if self.key_info['expire_ts']:
             self.add_error(None, 'The API key should have no expiry checked')
