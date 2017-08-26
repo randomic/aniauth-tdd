@@ -23,8 +23,8 @@ class AddAPIFormTest(TestCase):
 
         """
         form = AddAPIForm({
-            'keyID': '1',
-            'vCode': 'test'})
+            'key_id': '1',
+            'v_code': 'test'})
         self.assertFalse(form.is_valid())
 
     # Mask: 4294967295
@@ -34,8 +34,8 @@ class AddAPIFormTest(TestCase):
         """
         keypair = self.testkeys['full']['all']
         form = AddAPIForm({
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']})
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']})
         self.assertTrue(form.is_valid())
 
     def test_api_full_char_corp(self):
@@ -44,8 +44,8 @@ class AddAPIFormTest(TestCase):
         """
         keypair = self.testkeys['full']['char_corp']
         form = AddAPIForm({
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']})
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']})
         self.assertFalse(form.is_valid())
 
     def test_api_full_char_noncorp(self):
@@ -54,6 +54,6 @@ class AddAPIFormTest(TestCase):
         """
         keypair = self.testkeys['full']['char_noncorp']
         form = AddAPIForm({
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']})
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']})
         self.assertFalse(form.is_valid())

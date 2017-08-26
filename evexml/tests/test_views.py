@@ -23,8 +23,8 @@ class AddAPIViewTest(TestCase):
 
         """
         response = self.client.post(self.url, data={
-            'keyID': '1',
-            'vCode': 'test'}, follow=True)
+            'key_id': '1',
+            'v_code': 'test'}, follow=True)
         self.assertContains(response, 'problem')
 
     # Mask: 4294967295
@@ -34,8 +34,8 @@ class AddAPIViewTest(TestCase):
         """
         keypair = self.testkeys['full']['all']
         response = self.client.post(self.url, data={
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']}, follow=True)
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'success')
 
     def test_api_full_char_corp(self):
@@ -44,8 +44,8 @@ class AddAPIViewTest(TestCase):
         """
         keypair = self.testkeys['full']['char_corp']
         response = self.client.post(self.url, data={
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']}, follow=True)
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
 
     def test_api_full_char_noncorp(self):
@@ -54,6 +54,6 @@ class AddAPIViewTest(TestCase):
         """
         keypair = self.testkeys['full']['char_noncorp']
         response = self.client.post(self.url, data={
-            'keyID': keypair['keyID'],
-            'vCode': keypair['vCode']}, follow=True)
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'problem')
