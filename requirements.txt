@@ -1,2 +1,2 @@
-django<=1.11
+django==1.11.4
 evelink==0.7.5
