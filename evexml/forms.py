@@ -1,5 +1,6 @@
 import evelink.account
 from django.forms.models import ModelForm
+from django.core.exceptions import ValidationError
 
 from evexml.models import APIKeyPair
 
@@ -10,7 +11,6 @@ class AddAPIForm(ModelForm):
         fields = '__all__'
 
     def clean(self):
-        super(AddAPIForm, self).clean()
         self._clean()
         return self.cleaned_data
 
@@ -37,7 +37,11 @@ class AddAPIForm(ModelForm):
         if not self.is_valid():
             return
 
-        self.save()
+        try:
+            self.instance.validate_unique()
+            self.save()
+        except ValidationError:
+            pass
 
         key_info = self.cleaned_data.get('key_info')
         if key_info['type'] != 'account':
