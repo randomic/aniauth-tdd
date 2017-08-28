@@ -28,7 +28,8 @@ class AddAPIForm(ModelForm):
         try:
             self.cleaned_data['key_info'] = account.key_info().result
         except evelink.api.APIError as error:
-            self.add_error(None, error.message)
+            self.add_error(None,
+                           "API Error: %s (%s)" % (error.message, error.code))
             return
 
     def full_clean(self):
