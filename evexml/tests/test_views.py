@@ -34,7 +34,7 @@ class AddAPIViewTest(TestCase):
         response = self.client.post(self.url, data={
             'key_id': '1',
             'v_code': 'test'}, follow=True)
-        self.assertContains(response, 'problem')
+        self.assertContains(response, 'API Error:')
 
     def test_correct_api(self):
         """Full and account-wide keypair is accepted.
@@ -54,4 +54,4 @@ class AddAPIViewTest(TestCase):
         response = self.client.post(self.url, data={
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
-        self.assertContains(response, 'problem')
+        self.assertContains(response, 'The API key should have full access')

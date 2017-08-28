@@ -52,9 +52,9 @@ class SubmissionTest(StaticLiveServerTestCase):
         self.browser.get(self.url)
         # They see input boxes for key_id and v_code.
         key_id_input = self.browser.find_element_by_name('key_id')
-        self.assertEqual(key_id_input.get_attribute('placeholder'), 'keyID')
+        self.assertIn('keyID', key_id_input.get_attribute('placeholder'))
         v_code_input = self.browser.find_element_by_name('v_code')
-        self.assertEqual(v_code_input.get_attribute('placeholder'), 'vCode')
+        self.assertIn('vCode', v_code_input.get_attribute('placeholder'))
 
         valid_key = self.testkeys['full']['all']
         key_id_input.send_keys(valid_key['key_id'])
@@ -80,10 +80,7 @@ class SubmissionTest(StaticLiveServerTestCase):
         v_code_input.send_keys(Keys.ENTER)
 
         self.assertIn(
-            'At least one problem occurred',
-            self.browser.find_element_by_tag_name('body').text)
-        self.assertIn(
-            'API Error',
+            'API Error:',
             self.browser.find_element_by_tag_name('body').text)
 
     def test_user_submits_incorrect_key(self):
@@ -102,5 +99,5 @@ class SubmissionTest(StaticLiveServerTestCase):
         v_code_input.send_keys(Keys.ENTER)
 
         self.assertIn(
-            'At least one problem occurred',
+            'The API key should have full access',
             self.browser.find_element_by_tag_name('body').text)
