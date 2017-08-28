@@ -15,13 +15,16 @@ class AddAPIForm(ModelForm):
 
     @property
     def helper(self):
+        """Helper for rendering crispy form.
+
+        """
         helper = FormHelper()
         helper.form_show_labels = False
         helper.layout = Layout()
         for field_name, field in self.fields.items():
             helper.layout.append(Field(field_name, placeholder=field.label))
         helper.layout.append(FormActions(
-                Submit('submit', 'Submit', css_class='btn-success')
+                Submit('submit', 'Submit', css_class='btn btn-outline-success')
             ))
         return helper
 
