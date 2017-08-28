@@ -7,6 +7,7 @@ class APIKeyPair(models.Model):
         verbose_name=' vCode',
         max_length=64
     )
+    is_valid = models.BooleanField(blank=False, default=True)
 
     class Meta:
         unique_together = ('key_id', 'v_code')

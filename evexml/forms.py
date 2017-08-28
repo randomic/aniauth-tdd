@@ -11,7 +11,7 @@ from evexml.models import APIKeyPair
 class AddAPIForm(ModelForm):
     class Meta:
         model = APIKeyPair
-        fields = '__all__'
+        exclude = ['is_valid']
 
     @property
     def helper(self):
