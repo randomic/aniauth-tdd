@@ -25,7 +25,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         cls.browser = webdriver.Chrome()
         cls.browser.maximize_window()
         cls.browser.implicitly_wait(MAX_WAIT)
-        super(NewVisitorTest, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
