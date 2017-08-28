@@ -1,4 +1,4 @@
-{% extends "base.html" %}28
+{% extends "base.html" %}
 
 {% block nav_form %}{% endblock nav_form %}
 
@@ -6,11 +6,6 @@
 
 <p>To login simply enter your email address below, and click the link that is sent to you.</p>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.email.errors }}
-    <input type="text" class="form-control" placeholder="Email" spellcheck="false" id="id_email" name="email">
-    <button class="btn btn-outline-success" type="submit">Continue</button>
-</form>
+{% crispy form %}
 
-{% endblock %}
+{% endblock body %}

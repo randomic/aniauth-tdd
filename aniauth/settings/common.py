@@ -31,6 +31,9 @@ DATABASES = {
 INSTALLED_APPS = [
     'aniauth',
     'logintokens',
+    'evexml',
+
+    'crispy_forms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -110,9 +113,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins': ['crispy_forms.templatetags.crispy_forms_tags'],
         },
     },
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',

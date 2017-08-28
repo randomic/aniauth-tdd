@@ -8,6 +8,9 @@ from django.contrib.auth.forms import UsernameField
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.template import loader
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.bootstrap import FormActions
 
 from logintokens.tokens import default_token_generator
 
@@ -48,6 +51,20 @@ class TokenLoginForm(forms.Form):
     email = EmailOrUsernameField(  # For majority of users it will be an email.
         max_length=254
     )
+
+    @property
+    def helper(self):
+        """Helper for rendering crispy form.
+
+        """
+        helper = FormHelper()
+        helper.form_show_labels = False
+        helper.layout = Layout(
+            Field('email', placeholder='Email'),
+            FormActions(
+                Submit('submit', 'Login', css_class='btn btn-outline-success')
+            ))
+        return helper
 
     @staticmethod
     def send_mail(email_template_subject, email_template_content,
