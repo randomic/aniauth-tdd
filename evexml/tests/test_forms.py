@@ -177,3 +177,16 @@ class AddAPIFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
+
+    def test_duplicate_api(self):
+        """A duplicate should not be saved but should not display an error.
+
+        """
+        keypair = self.testkeys['full']['all']
+        for dummy_i in range(2):  # Submit the same keypair twice.
+            form = AddAPIForm({
+                'key_id': keypair['key_id'],
+                'v_code': keypair['v_code']})
+            self.assertTrue(form.is_valid())
+            self.assertEqual(
+                APIKeyPair.objects.filter(key_id=keypair['key_id']).count(), 1)
