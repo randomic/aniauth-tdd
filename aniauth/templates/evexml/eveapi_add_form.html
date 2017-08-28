@@ -8,14 +8,6 @@
     <p>At least one problem occurred while checking the supplied API key:</p>
 {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <p><input type="number" class="form-control" placeholder="keyID" id="id_key_id" name="key_id"></p>
-    {{ form.key_id.errors }}
-    <p><input type="text" maxlength="64" class="form-control" placeholder="vCode" id="id_v_code" name="v_code"></p>
-    {{ form.v_code.errors }}
-    <p><button class="btn btn-outline-success" type="submit">Submit</button></p>
-</form>
+{% crispy form %}
 
-{% endblock %}
+{% endblock body %}
