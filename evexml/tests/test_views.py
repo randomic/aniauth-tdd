@@ -45,3 +45,13 @@ class AddAPIViewTest(TestCase):
             'key_id': keypair['key_id'],
             'v_code': keypair['v_code']}, follow=True)
         self.assertContains(response, 'successfully saved')
+
+    def test_incorrect_api(self):
+        """Partial and account-wide keypair is rejected.
+
+        """
+        keypair = self.testkeys['partial']['all']
+        response = self.client.post(self.url, data={
+            'key_id': keypair['key_id'],
+            'v_code': keypair['v_code']}, follow=True)
+        self.assertContains(response, 'problem')
