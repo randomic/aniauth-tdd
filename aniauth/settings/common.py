@@ -114,6 +114,7 @@ TEMPLATES = [
         },
     },
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
