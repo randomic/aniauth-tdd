@@ -4,10 +4,6 @@
 
 <p>Please enter a full API key, if you have not yet created one <a href="https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=4294967295">click here</a>.</p>
 
-{% if form.errors %}
-    <p>At least one problem occurred while checking the supplied API key:</p>
-{% endif %}
-
 {% crispy form %}
 
 {% endblock body %}

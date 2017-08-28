@@ -1,6 +1,9 @@
-import evelink.account
+import evelink
 from django.forms.models import ModelForm
 from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.bootstrap import FormActions
 
 from evexml.models import APIKeyPair
 
@@ -9,6 +12,18 @@ class AddAPIForm(ModelForm):
     class Meta:
         model = APIKeyPair
         fields = '__all__'
+
+    @property
+    def helper(self):
+        helper = FormHelper()
+        helper.form_show_labels = False
+        helper.layout = Layout()
+        for field_name, field in self.fields.items():
+            helper.layout.append(Field(field_name, placeholder=field.label))
+        helper.layout.append(FormActions(
+                Submit('submit', 'Submit', css_class='btn-success')
+            ))
+        return helper
 
     def clean(self):
         self._clean()
