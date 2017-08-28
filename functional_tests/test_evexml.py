@@ -33,6 +33,7 @@ class SubmissionTest(StaticLiveServerTestCase):
         with data_dir.joinpath('conf', 'test_secrets.json').open() as handle:
             secrets = json.load(handle)
             cls.testkeys = secrets['apikeys']
+        cls.url = cls.live_server_url + reverse('eveapi_add')
 
     @classmethod
     def tearDownClass(cls):
@@ -48,8 +49,7 @@ class SubmissionTest(StaticLiveServerTestCase):
 
         """
         # They browse to the eve api keys page.
-        url = self.live_server_url + reverse('eveapi_add')
-        self.browser.get(url)
+        self.browser.get(self.url)
         # They see input boxes for key_id and v_code.
         key_id_input = self.browser.find_element_by_name('key_id')
         self.assertEqual(key_id_input.get_attribute('placeholder'), 'keyID')
@@ -63,4 +63,44 @@ class SubmissionTest(StaticLiveServerTestCase):
 
         self.assertIn(
             'Your API key has been successfully saved',
+            self.browser.find_element_by_tag_name('body').text)
+
+    def test_user_submits_invalid_key(self):
+        """Expected behaviour for user submitting invalid API Keypair.
+
+        """
+        # They browse to the eve api keys page.
+        self.browser.get(self.url)
+        # They see input boxes for key_id and v_code.
+        key_id_input = self.browser.find_element_by_name('key_id')
+        v_code_input = self.browser.find_element_by_name('v_code')
+
+        key_id_input.send_keys('1')
+        v_code_input.send_keys('invalid')
+        v_code_input.send_keys(Keys.ENTER)
+
+        self.assertIn(
+            'At least one problem occurred',
+            self.browser.find_element_by_tag_name('body').text)
+        self.assertIn(
+            'API Error',
+            self.browser.find_element_by_tag_name('body').text)
+
+    def test_user_submits_incorrect_key(self):
+        """User submits valid API key but it is missing information.
+
+        """
+        # They browse to the eve api keys page.
+        self.browser.get(self.url)
+        # They see input boxes for key_id and v_code.
+        key_id_input = self.browser.find_element_by_name('key_id')
+        v_code_input = self.browser.find_element_by_name('v_code')
+
+        valid_key = self.testkeys['partial']['all']
+        key_id_input.send_keys(valid_key['key_id'])
+        v_code_input.send_keys(valid_key['v_code'])
+        v_code_input.send_keys(Keys.ENTER)
+
+        self.assertIn(
+            'At least one problem occurred',
             self.browser.find_element_by_tag_name('body').text)
