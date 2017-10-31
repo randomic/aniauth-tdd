@@ -15,21 +15,28 @@
     <body>
         <div class="bg-faded mb-3">
             <div class="container">
-                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
                 <nav class="navbar navbar-expand-md navbar-light">
                     <a class="navbar-brand" href="#">
-                        <img src="https://image.eveonline.com/Corporation/98199571_32.png" width="30" height="30" class="d-inline-block align-top mr-sm-1" alt="">
-                        ANIAuth
+                        <img src="https://image.eveonline.com/Corporation/98199571_32.png" width="30" height="30" class="d-inline-block align-top mr-sm-1" alt="">ANIAuth<span class="sr-only"> (current)</span>
                     </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <div class="navbar-nav">
                             {% block menu %}
-                                <a class="nav-item nav-link active" href="#">Home<span class="sr-only"> (current)</span></a>
-                                <a class="nav-link" href="#">Features</a>
-                                <a class="nav-link" href="#">Pricing</a>
-                                <a class="nav-link" href="https://zkillboard.com/corporation/98199571/">Killboard</a>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Menu
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item disabled" href="#">Services</a>
+                                        <a class="dropdown-item" href="{% url 'eveapi_add' %}">Add API Key</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://zkillboard.com/corporation/98199571/">Killboard</a>
+                                </li>
                             {% endblock menu %}
                         </div>
                         {% if user.is_authenticated %}
