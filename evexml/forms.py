@@ -24,8 +24,8 @@ class AddAPIForm(ModelForm):
         for field_name, field in self.fields.items():
             helper.layout.append(Field(field_name, placeholder=field.label))
         helper.layout.append(FormActions(
-                Submit('submit', 'Submit', css_class='btn btn-outline-success')
-            ))
+            Submit('submit', 'Submit', css_class='btn btn-outline-success')
+        ))
         return helper
 
     def clean(self):
@@ -66,5 +66,5 @@ class AddAPIForm(ModelForm):
             self.add_error(None, 'The API key should select Character: All')
         if key_info['access_mask'] != 4294967295:
             self.add_error(None, 'The API key should have full access')
-        if key_info['expire_ts']:
+        if isinstance(key_info['expire_ts'], int):
             self.add_error(None, 'The API key should have no expiry checked')

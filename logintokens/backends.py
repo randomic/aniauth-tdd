@@ -15,7 +15,7 @@ class EmailOnlyAuthenticationBackend:
     """
     token_generator = default_token_generator
 
-    def authenticate(self, dummy_request, token=None, max_age=600):
+    def authenticate(self, unused_request, token=None, max_age=600):
         """Login/create the user from the provided login token.
 
         """
