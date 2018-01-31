@@ -1,0 +1,39 @@
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+test_api_blank_all
+6401603 APIResult(result={'access_mask': 0, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737560, expires=1516737699)
+test_api_blank_char_corp
+6401605 APIResult(result={'access_mask': 0, 'expire_ts': None, 'characters': {1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'char'}, timestamp=1516737560, expires=1516737700)
+test_api_blank_char_noncorp
+6401609 APIResult(result={'access_mask': 0, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}}, 'type': 'char'}, timestamp=1516737560, expires=1516737700)
+test_api_expires_all
+6401612 APIResult(result={'access_mask': 4294967295, 'expire_ts': 1534683671, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737561, expires=1516737700)
+test_api_expires_char_corp
+6401614 APIResult(result={'access_mask': 4294967295, 'expire_ts': 1534683712, 'characters': {1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'char'}, timestamp=1516737561, expires=1516737700)
+test_api_expires_char_noncorp
+6401617 APIResult(result={'access_mask': 4294967295, 'expire_ts': 1534683742, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}}, 'type': 'char'}, timestamp=1516737561, expires=1516737700)
+test_api_full_all
+6401586 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737561, expires=1516737701)
+test_api_full_char_corp
+6401587 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'char'}, timestamp=1516737562, expires=1516737701)
+test_api_full_char_noncorp
+6401598 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}}, 'type': 'char'}, timestamp=1516737562, expires=1516737701)
+test_api_partial_all
+6401600 APIResult(result={'access_mask': 4294901631, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737562, expires=1516737701)
+test_api_partial_char_corp
+6401601 APIResult(result={'access_mask': 4294901631, 'expire_ts': None, 'characters': {1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'char'}, timestamp=1516737562, expires=1516737701)
+test_api_partial_char_noncorp
+6401602 APIResult(result={'access_mask': 4294901631, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}}, 'type': 'char'}, timestamp=1516737562, expires=1516737702)
+test_duplicate_api
+6401586 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737563, expires=1516737701)
+6401586 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737563, expires=1516737701)
+1 Authentication failure. (code=203)
+6401586 APIResult(result={'access_mask': 4294967295, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737563, expires=1516737701)
+6401600 APIResult(result={'access_mask': 4294901631, 'expire_ts': None, 'characters': {94578984: {'alliance': {'name': '', 'id': 0}, 'name': 'Sentry Ward', 'id': 94578984, 'corp': {'name': 'Chrome On All Merchandise', 'id': 98030508}}, 1952533190: {'alliance': {'name': 'Centipede Caliphate.', 'id': 99005492}, 'name': 'Cheleyl', 'id': 1952533190, 'corp': {'name': 'Anti-Nub Incorporated', 'id': 98199571}}}, 'type': 'account'}, timestamp=1516737563, expires=1516737701)
+1 Authentication failure. (code=203)
+Destroying test database for alias 'default'...
+...........................................
+----------------------------------------------------------------------
+Ran 43 tests in 4.701s
+
+OK

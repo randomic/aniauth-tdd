@@ -12,7 +12,7 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 BASE_DIR = PROJECT_PACKAGE.parent
 
 data_dir_key = 'ANIAUTH_DATA_DIR'
-DATA_DIR = Path(os.environ[data_dir_key]) if data_dir_key in os.environ else BASE_DIR.parent
+DATA_DIR = Path(os.environ[data_dir_key]) if data_dir_key in os.environ else BASE_DIR
 
 
 with DATA_DIR.joinpath('conf', 'secrets.json').open() as handle:

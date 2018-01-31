@@ -3,7 +3,7 @@
 """
 import re
 
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, mock
 from django.core import mail
 from django.shortcuts import reverse
 from django.contrib.auth import get_user_model
@@ -14,6 +14,7 @@ from logintokens.forms import TokenLoginForm
 USER = get_user_model()
 
 
+@mock.patch('socket.getfqdn', new=lambda: 'TEST')
 class LoginFormTest(TestCase):
     """Tests the form which validates the email used for login.
 

@@ -1,57 +1,52 @@
 """evexml app unittests for views
 
 """
-import json
-
-from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, mock
 from django.shortcuts import reverse
+from evelink.api import APIError
+
+from .util import TEST_RESULTS
 
 
+@mock.patch('evelink.account.Account.key_info')
 class AddAPIViewTest(TestCase):
     """Tests for the view which displays the "Add API" form.
 
     """
-    @classmethod
-    def setUpClass(cls):
-        super(AddAPIViewTest, cls).setUpClass()
-        data_dir = getattr(settings, 'DATA_DIR')
-        with data_dir.joinpath('conf', 'test_secrets.json').open() as handle:
-            secrets = json.load(handle)
-            cls.testkeys = secrets['apikeys']
-        cls.url = reverse('eveapi_add')
+    _key_id = '1234567890'
+    _vcode = 'AddAPIViewTest'
+    _url = reverse('eveapi_add')
 
-    def test_view_renders(self):
+    def post_api_keypair(self):
+        data = {'key_id': self._key_id, 'v_code': self._vcode}
+        return self.client.post(self._url, data, follow=True)
+
+    def test_view_renders(self, unused_mock):
         """The view should render correctly.
 
         """
-        self.client.get(self.url)
+        self.client.get(self._url)
 
-    def test_invalid_api(self):
+    def test_invalid_api(self, mock_api):
         """Invalid api is rejected.
 
         """
-        response = self.client.post(self.url, data={
-            'key_id': '1',
-            'v_code': 'test'}, follow=True)
+        mock_api.side_effect = APIError(203, 'Authentication failure.')
+        response = self.post_api_keypair()
         self.assertContains(response, 'API Error:')
 
-    def test_correct_api(self):
+    def test_correct_api(self, mock_api):
         """Full and account-wide keypair is accepted.
 
         """
-        keypair = self.testkeys['full']['all']
-        response = self.client.post(self.url, data={
-            'key_id': keypair['key_id'],
-            'v_code': keypair['v_code']}, follow=True)
+        mock_api.return_value = TEST_RESULTS['full']['all']
+        response = self.post_api_keypair()
         self.assertContains(response, 'successfully saved')
 
-    def test_incorrect_api(self):
+    def test_incorrect_api(self, mock_api):
         """Partial and account-wide keypair is rejected.
 
         """
-        keypair = self.testkeys['partial']['all']
-        response = self.client.post(self.url, data={
-            'key_id': keypair['key_id'],
-            'v_code': keypair['v_code']}, follow=True)
+        mock_api.return_value = TEST_RESULTS['partial']['all']
+        response = self.post_api_keypair()
         self.assertContains(response, 'The API key should have full access')
