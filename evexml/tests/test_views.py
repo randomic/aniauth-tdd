@@ -15,21 +15,17 @@ class AddAPIViewTest(TestCase):
     """
     _key_id = '1234567890'
     _vcode = 'AddAPIViewTest'
+    _url = reverse('eveapi_add')
 
     def post_api_keypair(self):
         data = {'key_id': self._key_id, 'v_code': self._vcode}
-        return self.client.post(self.url, data, follow=True)
-
-    @classmethod
-    def setUpClass(cls):
-        super(AddAPIViewTest, cls).setUpClass()
-        cls.url = reverse('eveapi_add')
+        return self.client.post(self._url, data, follow=True)
 
     def test_view_renders(self, unused_mock):
         """The view should render correctly.
 
         """
-        self.client.get(self.url)
+        self.client.get(self._url)
 
     def test_invalid_api(self, mock_api):
         """Invalid api is rejected.
